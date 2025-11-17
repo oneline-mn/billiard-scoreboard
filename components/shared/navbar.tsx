@@ -7,26 +7,13 @@ import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { CustomDialog } from "./custom-dialog";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { createStore, useStateMachine } from "little-state-machine";
+import { useStateMachine } from "little-state-machine";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 
-export interface Player {
-  id: number;
-  playerName: string;
-  totalMatch: number;
-  wins: number;
-}
-declare module "little-state-machine" {
-  interface GlobalState {
-    players: Player[];
-  }
-}
-
-createStore({
-  players: [],
-});
+// TODO: Hydration error, sudal
+import "@/state";
+import { Player } from "@/state";
 
 export function addPlayer(state: { players: Player[] }, payload: Omit<Player, "id">) {
   const newPlayer: Player = {
@@ -47,7 +34,7 @@ export default function Navbar() {
 
   const { register, handleSubmit, reset } = useForm<Omit<Player, "id">>({
     defaultValues: {
-      playerName: "",
+      playerName: " ",
       totalMatch: 0,
       wins: 0,
     },
@@ -55,6 +42,7 @@ export default function Navbar() {
 
   const onSubmit: SubmitHandler<Omit<Player, "id">> = (data) => {
     actions.addPlayer(data);
+    console.log(data.playerName);
     showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
     reset();
   };
