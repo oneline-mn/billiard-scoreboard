@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomDialog } from "@/components/shared/custom-dialog";
 import { showToast } from "@/components/shared/use-toast";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,7 +11,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
 import React from "react";
-import { toast } from "sonner";
 
 export default function Page() {
   const tags = Array.from({ length: 50 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`);
@@ -23,14 +23,12 @@ export default function Page() {
           <h1 className="font-bold">Button</h1>
           <div className="flex gap-4">
             <Button className="">Get Started</Button>
-
             <Button variant="outline">Outline</Button>
             <Button variant="secondary">Secondary</Button>
             <Button variant="destructive">Destructive</Button>
             <Button variant="link">Button Link</Button>
           </div>
         </div>
-
         <Separator />
 
         {/* Input */}
@@ -108,7 +106,7 @@ export default function Page() {
         <div className="space-y-4">
           <h1 className="font-bold">Toaster || Sonner /shadcn/ </h1>
           <div className="space-x-4">
-            <Button variant="outline" onClick={() => showToast("default", "Default Toast", "Lorem ipsum dolor sit amet.")}>
+            <Button variant="outline" onClick={() => showToast("default", "Lorem ipsum dolor sit amet.")}>
               Default
             </Button>
 
@@ -116,18 +114,36 @@ export default function Page() {
               Success
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("info", "Information", "Lorem ipsum dolor sit amet.")}>
+            <Button variant="outline" onClick={() => showToast("info", "Lorem ipsum dolor sit amet.")}>
               Info
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("warning", "Warning!", "Lorem ipsum dolor sit amet.")}>
+            <Button variant="outline" onClick={() => showToast("warning", "Lorem ipsum dolor sit amet.")}>
               Warning
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("error", "Error!", "Lorem ipsum dolor sit amet.")}>
+            <Button variant="outline" onClick={() => showToast("error", "Lorem ipsum dolor sit amet.")}>
               Error
             </Button>
           </div>
+        </div>
+        <Separator />
+
+        {/* Dialog */}
+        <div className="space-y-4">
+          <h1 className="font-bold">Custom Dialog</h1>
+          <CustomDialog
+            trigger={<Button>Open Dialog</Button>}
+            title="Dialog Title"
+            onOpenChange={() => {
+              console.log("dialog open...");
+            }}
+          >
+            <div className="space-y-3">
+              <Label htmlFor="design">Example</Label>
+              <Input id="design" type="text" placeholder="Type something..." required />
+            </div>
+          </CustomDialog>
         </div>
       </div>
     </div>
