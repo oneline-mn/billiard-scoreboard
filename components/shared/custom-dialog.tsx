@@ -34,11 +34,6 @@ export function CustomDialog({ open, trigger, onOpenChange, title = "Dialog Titl
               <DialogClose asChild>
                 <Button variant="outline">{cancelText}</Button>
               </DialogClose>
-              {/* {onConfirm && (
-                <Button onClick={onConfirm} disabled={disableConfirm}>
-                  {confirmText}
-                </Button>
-              )} */}
                 <Button type="submit" onClick={onConfirm}  disabled={disableConfirm}>
                   {confirmText}
                 </Button>
