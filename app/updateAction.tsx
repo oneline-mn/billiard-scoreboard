@@ -1,5 +1,4 @@
-import { Player } from "./page";
-
+import { Player } from "@/components/shared/navbar";
 
 export default function updateAction(
   state: { players: Player[] },

@@ -1,58 +1,27 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
-import { createStore, useStateMachine } from "little-state-machine";
-import { SubmitHandler } from "react-hook-form";
-// import { useForm } from "react-hook-form";
-import { showToast } from "@/components/shared/use-toast";
-import { Input } from "@/components/ui/input";
-import { DialogFooter } from "@/components/ui/dialog";
-import { DialogClose } from "@radix-ui/react-dialog";
+"use client";
 
-export interface Player {
-  firstName: string;
-  playerName: string;
-  age: number;
-}
-declare module "little-state-machine" {
-  interface GlobalState {
-    players: Player[];
-  }
-}
-
-createStore({
-  players: [],
-});
-
-// Action
-export function addPlayer(state: { players: Player[] }, payload: { players: Player[] }) {
-  return {
-    ...state,
-    players: [...state.players, payload],
-  };
-}
+import { addPlayer } from "@/components/shared/navbar";
+import { useStateMachine } from "little-state-machine";
 
 export default function Home() {
-  // const { actions } = useStateMachine({ actions: { addPlayer } });
+  const { state, actions } = useStateMachine({ actions: { addPlayer } });
 
-  // const { register, handleSubmit, reset } = useForm<Player>({
-  //   defaultValues: {
-  //     firstName: "asd",
-  //     playerName: "asd",
-  //     age: 0,
-  //   },
-  // });
-
-  // const onSubmit: SubmitHandler<Player> = (data) => {
-  //   actions.addPlayer(data);
-  //   showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
-  //   reset();
-  // };
+  console.log(state.players);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background font-sans dark:bg-black">
-    
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 dark:bg-black sm:items-start">
+        {state.players.length > 0 ? (
+          <ul className="w-full space-y-4">
+            {state.players.map((player, index) => (
+              <li key={index} className="w-full rounded-lg border border-fill p-4">
+                <span className="font-medium text-foreground">{player.playerName}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-foreground/70">No players added yet.</p>
+        )}
       </main>
     </div>
   );

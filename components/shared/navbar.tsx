@@ -1,43 +1,104 @@
 "use client";
 
-import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Component, ScreenShare } from "lucide-react";
+import { Component, Plus, ScreenShare } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
+import { CustomDialog } from "./custom-dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { createStore, useStateMachine } from "little-state-machine";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { showToast } from "./use-toast";
+
+export interface Player {
+  playerName: string;
+}
+declare module "little-state-machine" {
+  interface GlobalState {
+    players: Player[];
+  }
+}
+
+createStore({
+  players: [],
+});
+
+export function addPlayer(state: { players: Player[] }, payload: Player) {
+  return {
+    ...state,
+    players: [...state.players, payload],
+  };
+}
+
 
 export default function Navbar() {
   const pathname = usePathname();
 
+  const { actions } = useStateMachine({ actions: { addPlayer } });
+
+  const { register, handleSubmit, reset } = useForm<Player>({
+    defaultValues: {
+      playerName: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<Player> = (data) => {
+    actions.addPlayer(data);
+    showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
+
+    reset();
+  };
+
   return (
     <section className="w-full sticky top-4">
-      <div className="max-w-md w-fit mx-auto bg-background border-fill border p-2 rounded-full flex justify-between items-center space-x-4">
-        <div className="flex h-full space-x-2">
-          <Button variant={pathname === "/" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
-            <Link href={"/"} className="font-semibold">
-              Leaderboard
-            </Link>
-          </Button>
-          <Button variant={pathname === "/match" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
-            <Link href={"/match"} className="font-semibold">
-              Match
-            </Link>
-          </Button>
-        </div>
+      <div className="max-w-4xl border border-fill rounded-full w-fit mx-auto flex items-center">
+        <div className="bg-background  p-2 rounded-full flex justify-between items-center space-x-4">
+          <div className="flex h-full space-x-2">
+            <Button variant={pathname === "/" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
+              <Link href={"/"} className="font-semibold">
+                Leaderboard
+              </Link>
+            </Button>
+            <Button variant={pathname === "/match" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
+              <Link href={"/match"} className="font-semibold">
+                Match
+              </Link>
+            </Button>
 
-        <Separator orientation="vertical" className=" w-1 h-8!" />
-        <div className="flex gap-2 ">
-          <Button variant="outline" asChild className="size-10 rounded-full">
-            <Link href={"/design-system"} className="italic font-semibold">
-              <Component />
-            </Link>
-          </Button>
-          <Button variant="outline" asChild className="size-10 rounded-full">
-            <Link href="https://billboard.dulmandakh-bce.workers.dev" className="italic font-semibold">
-              <ScreenShare />
-            </Link>
-          </Button>
+            <CustomDialog
+              trigger={
+                <Button className="rounded-full size-10">
+                  <Plus />
+                </Button>
+              }
+              title="Add new player"
+              contentClassName="max-w-sm!"
+            >
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div className="flex flex-col space-y-4 rounded-xl">
+                  <Input id="player-name" placeholder="First Name" className=""  {...register("playerName")} />
+                </div>
+              </form>
+            </CustomDialog>
+          </div>
+        </div>
+        <Separator orientation="vertical" className="mx-2 h-8! w-1" />
+
+        <div className="bg-background  p-2 rounded-full flex justify-between items-center">
+          <div className="flex gap-2 ">
+            <Button variant="outline" asChild className="size-10 rounded-full">
+              <Link href={"/design-system"} className="italic font-semibold">
+                <Component />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="size-10 rounded-full">
+              <Link href="https://billboard.dulmandakh-bce.workers.dev" className="italic font-semibold">
+                <ScreenShare />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
