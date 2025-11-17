@@ -13,7 +13,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 
 export interface Player {
+  id: number;
   playerName: string;
+  totalMatch: number;
+  wins: number;
 }
 declare module "little-state-machine" {
   interface GlobalState {
@@ -25,29 +28,34 @@ createStore({
   players: [],
 });
 
-export function addPlayer(state: { players: Player[] }, payload: Player) {
+export function addPlayer(state: { players: Player[] }, payload: Omit<Player, "id">) {
+  const newPlayer: Player = {
+    id: state.players.length + 1,
+    ...payload,
+  };
+
   return {
     ...state,
-    players: [...state.players, payload],
+    players: [...state.players, newPlayer],
   };
 }
-
 
 export default function Navbar() {
   const pathname = usePathname();
 
   const { actions } = useStateMachine({ actions: { addPlayer } });
 
-  const { register, handleSubmit, reset } = useForm<Player>({
+  const { register, handleSubmit, reset } = useForm<Omit<Player, "id">>({
     defaultValues: {
       playerName: "",
+      totalMatch: 0,
+      wins: 0,
     },
   });
 
-  const onSubmit: SubmitHandler<Player> = (data) => {
+  const onSubmit: SubmitHandler<Omit<Player, "id">> = (data) => {
     actions.addPlayer(data);
     showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
-
     reset();
   };
 
@@ -78,7 +86,7 @@ export default function Navbar() {
             >
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="flex flex-col space-y-4 rounded-xl">
-                  <Input id="player-name" placeholder="First Name" className=""  {...register("playerName")} />
+                  <Input id="player-name" placeholder="First Name" className="" {...register("playerName")} />
                 </div>
               </form>
             </CustomDialog>
