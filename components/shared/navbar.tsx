@@ -11,12 +11,21 @@ import { useStateMachine } from "little-state-machine";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 
-// TODO: Hydration error, sudal
-import "@/state";
-import { Player } from "@/state";
+export interface PlayerInputs {
+  id: number;
+  playerName: string;
+  totalMatch: number;
+  wins: number;
+}
 
-export function addPlayer(state: { players: Player[] }, payload: Omit<Player, "id">) {
-  const newPlayer: Player = {
+declare module "little-state-machine" {
+  interface GlobalState {
+    players: PlayerInputs[];
+  }
+}
+
+export function addPlayer(state: { players: PlayerInputs[] }, payload: Omit<PlayerInputs, "id">) {
+  const newPlayer: PlayerInputs = {
     id: state.players.length + 1,
     ...payload,
   };
@@ -29,21 +38,21 @@ export function addPlayer(state: { players: Player[] }, payload: Omit<Player, "i
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { state, actions } = useStateMachine({ actions: { addPlayer } });
 
-  const { actions } = useStateMachine({ actions: { addPlayer } });
-
-  const { register, handleSubmit, reset } = useForm<Omit<Player, "id">>({
+  const { register, handleSubmit, reset } = useForm<Omit<PlayerInputs, "id">>({
     defaultValues: {
-      playerName: " ",
+      playerName: "Player",
       totalMatch: 0,
       wins: 0,
     },
   });
 
-  const onSubmit: SubmitHandler<Omit<Player, "id">> = (data) => {
+  const onSubmit: SubmitHandler<Omit<PlayerInputs, "id">> = (data) => {
     actions.addPlayer(data);
     console.log(data.playerName);
     showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
+
     reset();
   };
 
