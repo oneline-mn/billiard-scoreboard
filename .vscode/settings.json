@@ -1,0 +1,21 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascriptreact"
+  },
+  "emmet.preferences": {},
+  "editor.wordWrap": "on",
+  "editor.tabSize": 1,
+  "editor.quickSuggestions": {
+    "strings": "on"
+  }
+}
