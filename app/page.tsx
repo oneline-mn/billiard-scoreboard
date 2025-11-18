@@ -1,7 +1,8 @@
 "use client";
 
 import { createStore, useStateMachine } from "little-state-machine";
-import { useSyncExternalStore } from "react"; import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useSyncExternalStore } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 createStore({ players: [] });
 
@@ -12,42 +13,6 @@ function useHydration() {
     () => false
   );
 }
-
-const event = {
-  address: "123 Tech Street",
-  date: new Date("2023-09-15"),
-  location: {
-    city: "San Francisco",
-    country: "USA",
-    description: "Annual conference discussing the latest in technology.",
-    postalCode: "94103",
-    state: "CA",
-    venue: "Tech Center",
-  },
-  organizer: {
-    email: "charlie.brown@protonmail.com", name: "Charlie Brown",
-    phone: "555-1234",
-  },
-  schedule: [
-    {
-      activity: "Registration",
-      speaker: null,
-      time: "09:00 AM",
-    },
-    {
-      activity: "Opening Keynote",
-      speaker: "Jane Doe",
-      time: "10:00 AM",
-    },
-    {
-      activity: "Tech Trends 2023",
-      speaker: "Alice Johnson",
-      time: "11:00 AM",
-    },
-  ],
-  status: "upcoming",
-  title: "Tech Conference 2023",
-};
 
 export default function Home() {
   const { state } = useStateMachine();
