@@ -9,14 +9,14 @@ createStore({ players: [] });
 
 function useHydration() {
   return useSyncExternalStore(
-    () => () => { },
+    () => () => {},
     () => true,
     () => false
   );
 }
 
 export default function Home() {
-  const { state } = useStateMachine({ actions: { addPlayer } });
+  const { state } = useStateMachine();
   const isHydrated = useHydration();
 
   return (
