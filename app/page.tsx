@@ -1,6 +1,5 @@
 "use client";
 
-import { addPlayer } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { createStore, useStateMachine } from "little-state-machine";
 import { useSyncExternalStore } from "react";
@@ -9,14 +8,14 @@ createStore({ players: [] });
 
 function useHydration() {
   return useSyncExternalStore(
-    () => () => { },
+    () => () => {},
     () => true,
     () => false
   );
 }
 
 export default function Home() {
-  const { state, actions } = useStateMachine({ actions: { addPlayer } });
+  const { state } = useStateMachine();
   const isHydrated = useHydration();
 
   return (

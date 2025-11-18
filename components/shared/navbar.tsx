@@ -38,7 +38,7 @@ export function addPlayer(state: { players: PlayerInputs[] }, payload: Omit<Play
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { state, actions } = useStateMachine({ actions: { addPlayer } });
+  const { actions } = useStateMachine({ actions: { addPlayer } });
 
   const { register, handleSubmit, reset } = useForm<Omit<PlayerInputs, "id">>({
     defaultValues: {
