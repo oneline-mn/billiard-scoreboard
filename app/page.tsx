@@ -1,6 +1,5 @@
 "use client";
 
-import { addPlayer } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { createStore, useStateMachine } from "little-state-machine";
 import { useSyncExternalStore } from "react";
