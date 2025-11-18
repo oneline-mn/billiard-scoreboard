@@ -16,7 +16,7 @@ function useHydration() {
 }
 
 export default function Home() {
-  const { state, actions } = useStateMachine({ actions: { addPlayer } });
+  const { state } = useStateMachine({ actions: { addPlayer } });
   const isHydrated = useHydration();
 
   return (
