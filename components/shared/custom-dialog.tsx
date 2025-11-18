@@ -15,22 +15,23 @@ interface CustomDialogProps {
   onConfirm?: () => void;
   showFooter?: boolean;
   disableConfirm?: boolean;
+  contentClassName?: string;
 }
 
-export function CustomDialog({ open, trigger, onOpenChange, title = "Dialog Title", description = ' ', children, cancelText = "Цуцлах", confirmText = "Баталгаажуулах", onConfirm, showFooter = true, disableConfirm = false }: CustomDialogProps) {
+export function CustomDialog({ open, trigger, onOpenChange, title = "Dialog Title", description = ' ', children, cancelText = "Cancel", confirmText = "Confirm", onConfirm, showFooter = true, disableConfirm = false, contentClassName = 'max-w-md' }: CustomDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
         <DialogTrigger asChild>{trigger ? trigger : <Button variant="outline">Open Dialog</Button>}</DialogTrigger>
-        <DialogContent className="max-w-md">
+        <DialogContent className={contentClassName}>
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle className="text-center text-xl font-bold">{title}</DialogTitle>
             {description && <DialogDescription>{description}</DialogDescription>}
           </DialogHeader>
           <div className="py-2">{children}</div>
 
           {showFooter && (
-            <DialogFooter>
+            <DialogFooter className=" grid grid-cols-2">
               <DialogClose asChild>
                 <Button variant="outline">{cancelText}</Button>
               </DialogClose>
