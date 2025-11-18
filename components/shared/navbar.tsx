@@ -40,7 +40,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const { actions } = useStateMachine({ actions: { addPlayer } });
 
-  const { register, handleSubmit, reset } = useForm<Omit<PlayerInputs, "id">>({
+  const { handleSubmit, register, reset } = useForm<Omit<PlayerInputs, "id">>({
     defaultValues: {
       playerName: "Player",
       totalMatch: 0,

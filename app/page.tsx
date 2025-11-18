@@ -18,7 +18,6 @@ export default function Home() {
   const { state } = useStateMachine();
   const isHydrated = useHydration();
 
-  console.log(event);
   return (
     <div className="min-h-screen max-w-3xl mx-auto px-4">
       <div className="flex min-h-screen w-full flex-col pt-20 space-y-4">
