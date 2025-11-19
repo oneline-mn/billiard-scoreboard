@@ -3,6 +3,7 @@ import nextTs from "eslint-config-next/typescript";
 import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig, globalIgnores } from "eslint/config";
 import { importX } from "eslint-plugin-import-x";
+import js from "@eslint/js";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -16,33 +17,16 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     ".open-next/**",
   ]),
+
   {
-    files: ["app/**/*.{js,ts,jsx,tsx,vue,svelte}"],
-    plugins: {
-      perfectionist,
-      "import-x": importX,
-    },
-    extends: ["import-x/flat/recommended"],
-    settings: {
-      "import-x": {
-        alias: {
-          "@": "./",
-        },
-      },
-      "import-x/resolver": {
-        typescript: true,
-      },
-    },
-    rules: {
-      "@typescript-eslint/no-unused-vars": "error",
-      "perfectionist/sort-objects": [
-        "error",
-        {
-          partitionByNewLine: true,
-          type: "alphabetical",
-        },
-      ],
-    },
+    ...js.configs.recommended,
+    ...importX.flatConfigs.recommended,
+    ...importX.flatConfigs.typescript,
+  },
+
+  {
+    files: ["app/**/*.{js,jsx,ts,tsx}"],
+    ...perfectionist.configs["recommended-natural"],
   },
 ]);
 

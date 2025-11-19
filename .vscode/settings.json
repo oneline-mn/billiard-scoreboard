@@ -4,11 +4,16 @@
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
   },
-"editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.fixAll.eslint": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
     "typescriptreact": "javascriptreact"

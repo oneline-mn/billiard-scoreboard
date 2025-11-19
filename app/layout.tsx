@@ -1,7 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
+
 import './globals.css'
-import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/shared/navbar";
+import { Toaster } from "@/components/ui/sonner";
+
 
 const geistSans = Geist({
   subsets: ["latin"],

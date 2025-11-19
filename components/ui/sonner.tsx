@@ -9,13 +9,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
   return (
     <Sonner
-      theme={theme as ToasterProps["theme"]}
       className="toaster group text-black!"
       icons={{
-        error: <OctagonXIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        error: <OctagonXIcon className="size-4" />,
         success: <CircleCheckIcon className="size-4" />,
+        loading: <Loader2Icon className="size-4 animate-spin" />,
         warning: <TriangleAlertIcon className="size-4" />,
       }}
       style={
@@ -26,6 +25,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-text": "var(--popover-foreground)",
         } as React.CSSProperties
       }
+      theme={theme as ToasterProps["theme"]}
       {...props}
     />
   );
