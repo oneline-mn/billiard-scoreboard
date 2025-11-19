@@ -58,12 +58,14 @@ export default function Navbar() {
       showToast("error", "Тоглогчийн нэр хоосон байж болохгүй!");
       return;
     }
-    const isDuplicate = state.players.some((player: { playerName: string }) => player.playerName.toLowerCase() === data.playerName.toLowerCase());
 
-    if (isDuplicate) {
+    const namesSet = new Set(state.players.map((p) => p.playerName.toLowerCase()));
+
+    if (namesSet.has(data.playerName.toLowerCase())) {
       showToast("error", "Бүртгэлтэй тоглогч");
       return;
     }
+
     actions.addPlayer(data);
     console.log(data.playerName);
     showToast(
@@ -94,7 +96,7 @@ export default function Navbar() {
 
             <CustomDialog
               trigger={
-                <Button className="rounded-full h-full">
+                <Button className="rounded-full h-full bg-lime-400 hover:bg-lime-300 transition-all shadow-[0_0_15px_-3px_rgba(163,230,53,0.7)]">
                   <Plus strokeWidth={3} />
                   Add Player
                 </Button>

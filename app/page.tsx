@@ -1,7 +1,6 @@
 "use client";
 
 import { createStore, useStateMachine } from "little-state-machine";
-import { Star } from "lucide-react";
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
@@ -23,39 +22,30 @@ export default function Home() {
   const { state } = useStateMachine();
   const isHydrated = useHydration();
 
-  const sortedPlayers = [...state.players].sort((a, b) => b.wins - a.wins);
+  const sortedPlayers = state.players.sort((a, b) => b.wins - a.wins);
   const top3 = sortedPlayers.slice(0, 3);
   const others = sortedPlayers.slice(3);
 
   return (
-    <div className="min-h-screen max-w-4xl mx-auto px-4">
-      <div className="flex min-h-screen w-full flex-col pt-32 space-y-4">
+    <div className="min-h-screen max-w-7xl mx-auto px-4">
+      <div className="flex min-h-screen w-full flex-col pt-32 space-y-10">
         {isHydrated && (
           <>
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-3 gap-8 text-center">
               {top3.map((leader, index) => {
                 return (
-                  <Leader
-                    className={cn(index === 1 && "mt-10 order-first", index === 2 && "mt-14")}
-                    key={index}
-                    label={index + 1}
-                    player={
-                      <h1>
-                        {leader.playerName}
-                        <span className="text-gray-600"> #0{leader.id}</span>
-                      </h1>
-                    }
-                    trophy={LEADERS_TROPHY[index].name}
-                  >
-                    <div className="flex items-center gap-1 mt-4">
-                      <Star className="fill-yellow-300 text-yellow-300 size-4" />
-                      <h1 className="font-bold text-xl">{leader.wins}</h1>
-                    </div>
-                    <div className="grid grid-cols-2 w-full mt-12 text-center">
-                      <div>
-                        <h1 className="text-sm text-slate-400 font-medium">Match stats</h1>
+                  <Leader className={cn(index === 1 && "mt-10 sm:order-first", index === 2 && "mt-14")} key={index} label={index + 1} player={<h1>{leader.playerName}</h1>} trophy={LEADERS_TROPHY[index].name}>
+                    <div className="grid grid-cols-3 gap-4 w-full mt-4  border-t pt-4">
+                      <div className="">
+                        <h1 className="text-sm text-slate-400 font-medium">WIns</h1>
                         <h1 className="font-medium">
-                          <span className="text-green-300">{leader.wins}</span> - <span className="text-red-300">{leader.totalMatch - leader.wins}</span>
+                          <span className="text-green-300">{leader.wins}</span>
+                        </h1>
+                      </div>
+                      <div>
+                        <h1 className="text-sm text-slate-400 font-medium">Losses</h1>
+                        <h1 className="font-medium">
+                          <span className="text-red-300">{leader.totalMatch - leader.wins}</span>
                         </h1>
                       </div>
                       <div>
@@ -88,9 +78,9 @@ export default function Home() {
                       <TableRow className="text-red-500 font-medium">
                         <TableHead className="w-[100px] text-gray-400">#</TableHead>
                         <TableHead className="text-gray-400">Player Name</TableHead>
+                        <TableHead className="text-center text-gray-400">W / L</TableHead>
                         <TableHead className="text-center text-gray-400">Total</TableHead>
                         <TableHead className="text-center text-gray-400">Winrate</TableHead>
-                        <TableHead className="text-center text-gray-400">Win</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -101,9 +91,21 @@ export default function Home() {
                             {player.playerName}
                             <span className="text-gray-600"> #0{player.id}</span>
                           </TableCell>
+                          <TableCell className="text-center space-x-1">
+                            <span className="text-green-400">{player.wins}</span>
+                            <span>/</span>
+                            <span className="text-red-400">{player.totalMatch - player.wins}</span>
+                          </TableCell>
                           <TableCell className="text-center">{player.totalMatch}</TableCell>
-                          <TableCell className="text-center">{Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%</TableCell>
-                          <TableCell className="text-center">{player.wins}</TableCell>
+                          
+                          {/* Winrate */}
+                          <TableCell className="text-center flex gap-3 justify-center items-center">
+                            <div className="flex relative h-1 w-12 sm:w-24">
+                              <span className="size-full bg-fill"></span>
+                              <span className={cn(`bg-primary h-full w-[${Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%]`)}></span>
+                            </div>
+                            {Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -118,15 +120,7 @@ export default function Home() {
   );
 }
 
-function useHydration() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
-
-const Leader: React.FC<LeaderProps> = ({ children, className, label, player }) => {
+function Leader({ children, className, label, player, trophy }: LeaderProps) {
   switch (label) {
     case 1:
       label = "1st";
@@ -138,18 +132,25 @@ const Leader: React.FC<LeaderProps> = ({ children, className, label, player }) =
       label = "3rd";
       break;
     default:
+      label = null;
   }
-
   return (
-    <div className={cn("w-full aspect-square bg-linear-to-t from-background from-30% to-[#171C29] relative", className)}>
-      <span className="absolute top-[35%] left-[50%] -translate-[50%] text-6xl font-black opacity-40 text-fill">{label}</span>
-      <div className="absolute -top-[20%] left-[50%] -translate-x-[50%] flex flex-col items-center space-y- w-full px-6">
-        <div className="mb-3 font-semibold text-lg">{player}</div>
-        <div className={cn("size-12 flex items-center justify-center rounded-md p-2 bg-gray-700")}>
-          <Image alt="trophy" height={70} src={`/trophies/crown.png`} width={70} />
+    <div className={cn("w-full aspect-2/1 bg-linear-to-t from-background from-30% to-[#171C29] relative px-10", className)}>
+      <div className={cn("flex flex-col gap-3 items-center justify-center rounded-md p-2 -mt-10")}>
+        <div className="flex items-center gap-3 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">
+          <Image alt="trophy" className="size-16 object-contain" height={100} src={`/trophies/${trophy}-cup.png`} width={100} />
         </div>
-        {children}
+        <div className="mb-3 font-semibold text-xl">{player}</div>
       </div>
+      {children}
     </div>
   );
-};
+}
+
+function useHydration() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}

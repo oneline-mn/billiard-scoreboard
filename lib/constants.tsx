@@ -1,6 +1,18 @@
-import { ChartNoAxesColumn, HandFist, Component, ScreenShare } from "lucide-react";
 
-export const LEADERS_TROPHY = [{ name: "gold" }, { name: "silver" }, { name: "bronze" }] as const;
+import {
+  ChartNoAxesColumn,
+  HandFist,
+  Component,
+  ScreenShare,
+} from "lucide-react";
+
+export const LEADERS_TROPHY = [
+  { name: "gold" },
+  { name: "silver" },
+  { name: "bronze" },
+] as const;
+
+
 
 export const NAV_LIST = [
   {
@@ -27,3 +39,4 @@ export const DEVNAV_LIST = [
     icon: <ScreenShare />,
   },
 ] as const;
+
