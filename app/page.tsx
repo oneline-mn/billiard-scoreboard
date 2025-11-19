@@ -137,7 +137,7 @@ function useHydration() {
   );
 }
 
-const Leader: React.FC<LeaderProps> = ({ children, className, label, player, trophy }) => {
+const Leader: React.FC<LeaderProps> = ({ children, className, label, player }) => {
   switch (label) {
     case 1:
       label = "1st";

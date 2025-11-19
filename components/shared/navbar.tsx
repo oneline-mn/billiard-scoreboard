@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Component, Plus, ScreenShare } from "lucide-react";
+import { ChartNoAxesColumn, Component, HandFist, Plus, ScreenShare } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { CustomDialog } from "./custom-dialog";
@@ -10,6 +10,33 @@ import { Input } from "../ui/input";
 import { useStateMachine } from "little-state-machine";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
+
+
+const NAV_LIST = [
+  {
+    name: "leaderboard",
+    url: "/",
+    icon: <ChartNoAxesColumn strokeWidth={4} />,
+  },
+  {
+    name: "match",
+    url: "/match",
+    icon: <HandFist strokeWidth={3} />,
+  },
+];
+
+const DEVNAV_LIST = [
+  {
+    name: "design system",
+    url: "/design",
+    icon: <Component />,
+  },
+  {
+    name: "preview",
+    url: "/preview",
+    icon: <ScreenShare />,
+  },
+];
 
 export interface PlayerInputs {
   id: number;
@@ -38,9 +65,14 @@ export function addPlayer(state: { players: PlayerInputs[] }, payload: Omit<Play
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { actions } = useStateMachine({ actions: { addPlayer } });
+  const { state, actions } = useStateMachine({ actions: { addPlayer } });
 
-  const { handleSubmit, register, reset } = useForm<Omit<PlayerInputs, "id">>({
+ const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Omit<PlayerInputs, "id">>({
     defaultValues: {
       playerName: "Player",
       totalMatch: 0,
@@ -49,6 +81,16 @@ export default function Navbar() {
   });
 
   const onSubmit: SubmitHandler<Omit<PlayerInputs, "id">> = (data) => {
+    if (!data.playerName.trim()) {
+      showToast("error", "Тоглогчийн нэр хоосон байж болохгүй!");
+      return;
+    }
+    const isDuplicate = state.players.some((player: { playerName: string }) => player.playerName.toLowerCase() === data.playerName.toLowerCase());
+
+    if (isDuplicate) {
+      showToast("error", "Бүртгэлтэй тоглогч");
+      return;
+    }
     actions.addPlayer(data);
     console.log(data.playerName);
     showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
@@ -57,52 +99,51 @@ export default function Navbar() {
   };
 
   return (
-    <section className="w-full sticky top-4">
-      <div className="max-w-4xl border border-fill rounded-full w-fit mx-auto flex items-center">
-        <div className="bg-background  p-2 rounded-full flex justify-between items-center space-x-4">
-          <div className="flex h-full space-x-2">
-            <Button variant={pathname === "/" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
-              <Link href={"/"} className="font-semibold">
-                Leaderboard
-              </Link>
-            </Button>
-            <Button variant={pathname === "/match" ? "secondary" : "outline"} asChild className="h-10 rounded-full">
-              <Link href={"/match"} className="font-semibold">
-                Match
-              </Link>
-            </Button>
+   <section className="w-full sticky top-4 z-40">
+      <div className="max-w-4xl rounded-full w-fit mx-auto flex items-center">
+        <div className="flex justify-between items-center gap-2">
+          <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
+            <div className="flex gap-2">
+              {NAV_LIST.map((list) => (
+                <Button key={list.name} variant={pathname === list.url ? "secondary" : "outline"} asChild className="h-10 rounded-full">
+                  <Link href={list.url} className="font-semibold capitalize">
+                    <span>{list.icon}</span>
+                    <span>{list.name}</span>
+                  </Link>
+                </Button>
+              ))}
+            </div>
+            <Separator orientation="vertical" className="h-8! w-1" />
 
             <CustomDialog
               trigger={
-                <Button className="rounded-full size-10">
-                  <Plus />
+                <Button className="rounded-full h-full">
+                  <Plus strokeWidth={3} />
+                  Add Player
                 </Button>
               }
               title="Add new player"
               contentClassName="max-w-sm!"
+              showFooter
+              onConfirm={handleSubmit(onSubmit)}
             >
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="flex flex-col space-y-4 rounded-xl">
-                  <Input id="player-name" placeholder="First Name" className="" {...register("playerName")} />
+                  <Input id="player-name" placeholder="Player Name..." className="" {...register("playerName", { required: true })} />
+                  {errors.playerName && errors.playerName.type === "required" && <span className="text-red-300 text-xs">Player name is required</span>}
                 </div>
               </form>
             </CustomDialog>
           </div>
-        </div>
-        <Separator orientation="vertical" className="mx-2 h-8! w-1" />
-
-        <div className="bg-background  p-2 rounded-full flex justify-between items-center">
-          <div className="flex gap-2 ">
-            <Button variant="outline" asChild className="size-10 rounded-full">
-              <Link href={"/design-system"} className="italic font-semibold">
-                <Component />
-              </Link>
-            </Button>
-            <Button variant="outline" asChild className="size-10 rounded-full">
-              <Link href="https://billboard.dulmandakh-bce.workers.dev" className="italic font-semibold">
-                <ScreenShare />
-              </Link>
-            </Button>
+          <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
+            {DEVNAV_LIST.map((list) => (
+              <Button key={list.name} variant="outline" asChild className="h-full rounded-full">
+                <Link href={list.url} className="italic font-semibold capitalize" target="_blank">
+                  {list.icon}
+                  {list.name}
+                </Link>
+              </Button>
+            ))}
           </div>
         </div>
       </div>
