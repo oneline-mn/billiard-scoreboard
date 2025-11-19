@@ -2,7 +2,6 @@
 
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { ChartNoAxesColumn, Component, HandFist, Plus, ScreenShare } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { usePathname } from "next/navigation";
 import { CustomDialog } from "./custom-dialog";
@@ -10,33 +9,8 @@ import { Input } from "../ui/input";
 import { useStateMachine } from "little-state-machine";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
-
-
-const NAV_LIST = [
-  {
-    name: "leaderboard",
-    url: "/",
-    icon: <ChartNoAxesColumn strokeWidth={4} />,
-  },
-  {
-    name: "match",
-    url: "/match",
-    icon: <HandFist strokeWidth={3} />,
-  },
-];
-
-const DEVNAV_LIST = [
-  {
-    name: "design system",
-    url: "/design",
-    icon: <Component />,
-  },
-  {
-    name: "preview",
-    url: "/preview",
-    icon: <ScreenShare />,
-  },
-];
+import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
+import { Plus } from "lucide-react";
 
 export interface PlayerInputs {
   id: number;
@@ -67,14 +41,13 @@ export default function Navbar() {
   const pathname = usePathname();
   const { state, actions } = useStateMachine({ actions: { addPlayer } });
 
- const {
+  const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<Omit<PlayerInputs, "id">>({
     defaultValues: {
-      playerName: "Player",
       totalMatch: 0,
       wins: 0,
     },
@@ -93,13 +66,17 @@ export default function Navbar() {
     }
     actions.addPlayer(data);
     console.log(data.playerName);
-    showToast("success", `Тоглогч ${data.playerName} нэмэгдлээ!`);
-
+    showToast(
+      "success",
+      <h1>
+        Тоглогч <span className="font-bold text-primary">{data.playerName}</span> нэмэгдлээ!
+      </h1>
+    );
     reset();
   };
 
   return (
-   <section className="w-full sticky top-4 z-40">
+    <section className="w-full sticky top-4 z-40">
       <div className="max-w-4xl rounded-full w-fit mx-auto flex items-center">
         <div className="flex justify-between items-center gap-2">
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
@@ -138,7 +115,7 @@ export default function Navbar() {
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
             {DEVNAV_LIST.map((list) => (
               <Button key={list.name} variant="outline" asChild className="h-full rounded-full">
-                <Link href={list.url} className="italic font-semibold capitalize" target="_blank">
+                <Link href={"fb.com"} className="italic font-semibold capitalize" target="_blank">
                   {list.icon}
                   {list.name}
                 </Link>

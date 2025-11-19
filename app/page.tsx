@@ -6,21 +6,10 @@ import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { LEADERS_TROPHY } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 createStore({ players: [] });
-
-const LEADERS_TROPHY = [
-  {
-    name: "gold",
-  },
-  {
-    name: "silver",
-  },
-  {
-    name: "bronze",
-  },
-];
 
 interface LeaderProps {
   children?: React.ReactNode;
