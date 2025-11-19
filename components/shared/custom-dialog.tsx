@@ -18,7 +18,7 @@ interface CustomDialogProps {
   contentClassName?: string;
 }
 
-export function CustomDialog({ open, trigger, onOpenChange, title = "Dialog Title", description = ' ', children, cancelText = "Cancel", confirmText = "Confirm", onConfirm, showFooter = true, disableConfirm = false, contentClassName = 'max-w-md' }: CustomDialogProps) {
+export function CustomDialog({ cancelText = "Cancel", children, confirmText = "Confirm", contentClassName = 'max-w-md', description = ' ', disableConfirm = false, onConfirm, onOpenChange, open, showFooter = true, title = "Dialog Title", trigger }: CustomDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>

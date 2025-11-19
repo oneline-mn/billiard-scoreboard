@@ -1,18 +1,11 @@
 "use client";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { createStore, useStateMachine } from "little-state-machine";
 import { useSyncExternalStore } from "react";
 
-createStore({ players: [] });
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-function useHydration() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
+createStore({ players: [] });
 
 export default function Home() {
   const { state } = useStateMachine();
@@ -35,7 +28,7 @@ export default function Home() {
                 </TableHeader>
                 <TableBody>
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground">
+                    <TableCell className="text-center text-muted-foreground" colSpan={4}>
                       No players yet
                     </TableCell>
                   </TableRow>
@@ -67,5 +60,13 @@ export default function Home() {
         </div>
       </div>
     </div>
+  );
+}
+
+function useHydration() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
   );
 }

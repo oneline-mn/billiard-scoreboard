@@ -1,5 +1,8 @@
 "use client";
 
+import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
+import React from "react";
+
 import { CustomDialog } from "@/components/shared/custom-dialog";
 import { showToast } from "@/components/shared/use-toast";
 import { Button } from "@/components/ui/button";
@@ -9,8 +12,6 @@ import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle }
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
-import React from "react";
 
 export default function Page() {
   const tags = Array.from({ length: 50 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`);
@@ -44,7 +45,7 @@ export default function Page() {
         <div className="space-y-4">
           <h1 className="font-bold">Checkbox</h1>
           <div className="flex items-center gap-3">
-            <Checkbox id="terms" defaultChecked />
+            <Checkbox defaultChecked id="terms" />
             <Label htmlFor="terms">Accept terms and conditions</Label>
           </div>
         </div>
@@ -61,7 +62,7 @@ export default function Page() {
               <ItemDescription>A simple item with title and description.</ItemDescription>
             </ItemContent>
             <ItemActions>
-              <Button variant="outline" size="sm">
+              <Button size="sm" variant="outline">
                 Action
               </Button>
             </ItemActions>
@@ -69,7 +70,7 @@ export default function Page() {
           <Separator className="my-4" />
 
           {/* Item & media */}
-          <Item variant="outline" size="sm" asChild>
+          <Item asChild size="sm" variant="outline">
             <a href="#">
               <ItemMedia>
                 <BadgeCheckIcon className="size-5" />
@@ -106,23 +107,23 @@ export default function Page() {
         <div className="space-y-4">
           <h1 className="font-bold">Toaster || Sonner /shadcn/ </h1>
           <div className="space-x-4">
-            <Button variant="outline" onClick={() => showToast("default", "Lorem ipsum dolor sit amet.")}>
+            <Button onClick={() => showToast("default", "Lorem ipsum dolor sit amet.")} variant="outline">
               Default
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("success", "Lorem ipsum dolor sit amet.")}>
+            <Button onClick={() => showToast("success", "Lorem ipsum dolor sit amet.")} variant="outline">
               Success
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("info", "Lorem ipsum dolor sit amet.")}>
+            <Button onClick={() => showToast("info", "Lorem ipsum dolor sit amet.")} variant="outline">
               Info
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("warning", "Lorem ipsum dolor sit amet.")}>
+            <Button onClick={() => showToast("warning", "Lorem ipsum dolor sit amet.")} variant="outline">
               Warning
             </Button>
 
-            <Button variant="outline" onClick={() => showToast("error", "Lorem ipsum dolor sit amet.")}>
+            <Button onClick={() => showToast("error", "Lorem ipsum dolor sit amet.")} variant="outline">
               Error
             </Button>
           </div>
@@ -133,15 +134,15 @@ export default function Page() {
         <div className="space-y-4">
           <h1 className="font-bold">Custom Dialog</h1>
           <CustomDialog
-            trigger={<Button>Open Dialog</Button>}
-            title="Dialog Title"
             onOpenChange={() => {
               console.log("dialog open...");
             }}
+            title="Dialog Title"
+            trigger={<Button>Open Dialog</Button>}
           >
             <div className="space-y-3">
               <Label htmlFor="design">Example</Label>
-              <Input id="design" type="text" placeholder="Type something..." required />
+              <Input id="design" placeholder="Type something..." required type="text" />
             </div>
           </CustomDialog>
         </div>
