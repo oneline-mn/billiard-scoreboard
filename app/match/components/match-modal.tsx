@@ -86,15 +86,21 @@ export function MatchModal({ onSubmit, players, trigger }: MatchModalProps) {
         <div className="border-l pl-4 flex flex-col">
           <h1 className="font-semibold text-center text-sm mb-10">Players overview in side</h1>
 
-          <div className="flex flex-col gap-2 w-full text-xs">
+          <div className="flex flex-col gap-1 w-full text-xs">
             {aSide.length === 0 ? (
               <p className="text-red-300 py-1">No players selected</p>
             ) : (
               aSide?.map((playerId, i) => {
                 const player = players.find((p) => p.id === playerId);
+                if (!player) return null;
                 return (
-                  <div key={i}>
-                    {player?.playerName} — Total Matches: {player?.totalMatch}, Wins: {player?.wins}
+                  <div className="border p-2 rounded flex justify-between" key={i}>
+                    <h1 className="flex-1">{player?.playerName}</h1>
+                    <div className="flex-1 w-full grid grid-cols-3">
+                      <h1 className="text-green-300">{player?.wins}</h1>
+                      <h1 className="text-red-300">{player?.totalMatch - player?.wins}</h1>
+                      <h1>{player?.wins}</h1>
+                    </div>
                   </div>
                 );
               })
@@ -109,9 +115,15 @@ export function MatchModal({ onSubmit, players, trigger }: MatchModalProps) {
             ) : (
               bSide?.map((playerId, i) => {
                 const player = players.find((p) => p.id === playerId);
+                if (!player) return null;
                 return (
-                  <div key={i}>
-                    {player?.playerName} — Total Matches: {player?.totalMatch}, Wins: {player?.wins}
+                  <div className="border p-2 rounded flex justify-between" key={i}>
+                    <h1 className="flex-1">{player?.playerName}</h1>
+                    <div className="flex-1 w-full grid grid-cols-3">
+                      <h1 className="text-green-300">{player?.wins}</h1>
+                      <h1 className="text-red-300">{player?.totalMatch - player?.wins}</h1>
+                      <h1>{player?.wins}</h1>
+                    </div>
                   </div>
                 );
               })
@@ -121,11 +133,17 @@ export function MatchModal({ onSubmit, players, trigger }: MatchModalProps) {
       </div>
 
       <DialogFooter>
-        <div className="flex justify-between">{step === 1 && <Button onClick={nextStep}>Next</Button>}</div>
+        <div className="flex justify-between">
+          {step === 1 && (
+            <Button onClick={nextStep} variant={"secondary"}>
+              Select B Side Players
+            </Button>
+          )}
+        </div>
         {step === 2 && (
           <>
-            <Button onClick={prevStep} variant={"outline"}>
-              Back
+            <Button onClick={prevStep} variant={"secondary"}>
+              Select A Side Players
             </Button>
             <DialogClose asChild disabled={aSide.length === 0 || bSide.length === 0}>
               <Button onClick={() => onSubmit({ aSide, bSide })}>Create match</Button>

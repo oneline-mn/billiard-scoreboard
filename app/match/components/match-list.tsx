@@ -1,8 +1,12 @@
 "use client";
 
 import { useStateMachine } from "little-state-machine";
+import { Plus } from "lucide-react";
 
+import { CustomDialog } from "@/components/shared/custom-dialog";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +51,29 @@ export default function MatchList() {
                     </div>
                     <div className="items-center justify-between flex border-t px-8 py-4">
                       <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
-                      <Button className="rounded-full" variant={"secondary"}>Finish match</Button>
+
+                      <CustomDialog
+                        contentClassName="max-w-sm!"
+                        showFooter
+                        title="Choose Winner Side"
+                        trigger={
+                          <Button className="rounded-full" variant={"secondary"}>
+                            <Plus strokeWidth={3} />
+                            Finish match
+                          </Button>
+                        }
+                      >
+                        <RadioGroup defaultValue="option-one">
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem id="option-one" value="option-one" />
+                            <Label htmlFor="option-one">A side</Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <RadioGroupItem id="option-two" value="option-two" />
+                            <Label htmlFor="option-two">B Side</Label>
+                          </div>
+                        </RadioGroup>
+                      </CustomDialog>
                     </div>
                   </div>
                 );
@@ -80,7 +106,6 @@ export function SideList({ classNames, playerIds, players, right, title }: SideL
               <h1 className="text-red-300">{player.totalMatch - player.wins}</h1>
               <h1>{player.wins}</h1>
             </div>
-            {/* <h1 className="font-bold hidden sm:block">{player.playerName}</h1> */}
           </div>
         );
       })}

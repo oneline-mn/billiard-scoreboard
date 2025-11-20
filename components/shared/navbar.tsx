@@ -112,7 +112,7 @@ export default function Navbar() {
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
             {DEVNAV_LIST.map((list) => (
               <Button key={list.name} variant="outline" asChild className="h-full rounded-full">
-                <Link href={"fb.com"} className="italic font-semibold capitalize" target="_blank">
+                <Link href={list.url} className="italic font-semibold capitalize" target="_blank" rel="noopener noreferrer">
                   {list.icon}
                   {list.name}
                 </Link>
