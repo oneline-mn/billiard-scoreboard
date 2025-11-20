@@ -1,6 +1,7 @@
 "use client";
 
 import { createStore, useStateMachine } from "little-state-machine";
+import { Plus } from "lucide-react";
 
 import { PlayerInputs } from "@/components/shared/navbar";
 import { showToast } from "@/components/shared/use-toast";
@@ -39,15 +40,15 @@ export default function Page() {
   const { actions, state } = useStateMachine({ actions: { addMatch } });
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
-      <div className="flex w-full flex-col pt-32 space-y-4">
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="flex w-full flex-col items-center pt-20 space-y-4">
         <MatchModal
           onSubmit={(result) => {
             actions.addMatch(result);
             showToast("success", "Match saved!");
           }}
           players={state.players}
-          trigger={<Button className="rounded-full">New Match</Button>}
+          trigger={<Button className="rounded-full"><Plus strokeWidth={3} />New Match</Button>}
         />
         <MatchList />
       </div>

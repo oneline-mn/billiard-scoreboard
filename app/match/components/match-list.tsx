@@ -2,7 +2,17 @@
 
 import { useStateMachine } from "little-state-machine";
 
+import { Button } from "@/components/ui/button";
 import useHydration from "@/lib/use-hydration";
+import { cn } from "@/lib/utils";
+
+interface SideListProps {
+  classNames?: string;
+  playerIds: number[];
+  players: Array<{ id: number; playerName: string; totalMatch: number; wins: number }>;
+  right?: string;
+  title: string;
+}
 
 export default function MatchList() {
   const { state } = useStateMachine();
@@ -12,42 +22,32 @@ export default function MatchList() {
   const players = state.players;
 
   return (
-    <div className="w-full mx-auto pt-20 px-4 space-y-6">
+    <>
       {isHydrated && (
         <div className="w-full">
           {matches.length === 0 ? (
             <p className="text-center text-muted-foreground">No matches yet</p>
           ) : (
-            <div className="flex flex-col-reverse">
+            <div className="flex flex-col-reverse gap-4">
               {matches.map((match, i) => {
                 return (
-                  <div className="border border-fill rounded p-10 flex flex-col" key={i}>
-                    <div className="flex justify-between items-center">
-                      <h1>Match #{i + 1}</h1>
-                      <div className="py-1 px-2 text-xs border-primary border rounded-full text-primary uppercase">On going</div>
+                  <div className="border border-fill rounded-xl flex flex-col relative bg-ring" key={i}>
+                    <div className="flex flex-col sm:flex-row p-8 gap-10 sm:gap-0">
+                      <SideList classNames="flex-2 sm:order-1" playerIds={match.aSide} players={players} title="A Side" />
+                      <div className="flex items-center justify-center flex-col gap-2 flex-1 order-first sm:order-2">
+                        <span className="text-primary text-xl font-bold">Match #{i + 1}</span>
+                        <div className="text-xs flex items-center gap-2">
+                          <span className="relative flex size-2">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75"></span> <span className="relative inline-flex size-2 rounded-full bg-teal-500"></span>
+                          </span>
+                          <span>On match</span>
+                        </div>
+                      </div>
+                      <SideList classNames="sm:text-right flex-2 order-3" playerIds={match.bSide} players={players} right="sm:order-last" title="B Side" />
                     </div>
-                    <div className="space-y-2 grid grid-cols-2">
-                      <div>
-                        {match.aSide?.map((playerId, i) => {
-                          const player = players.find((p) => p.id === playerId);
-                          return (
-                            <div key={i}>
-                              {player?.playerName} — Total Matches: {player?.totalMatch}, Wins: {player?.wins}
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <div>
-                        {match.bSide?.map((playerId, i) => {
-                          const player = players.find((p) => p.id === playerId);
-                          return (
-                            <div key={i}>
-                              {player?.playerName} — Total Matches: {player?.totalMatch}, Wins: {player?.wins}
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <p className="text-xs text-muted-foreground">Date: {new Date(match.createdAt).toLocaleString()}</p>
+                    <div className="items-center justify-between flex border-t px-8 py-4">
+                      <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
+                      <Button className="rounded-full" variant={"secondary"}>Finish match</Button>
                     </div>
                   </div>
                 );
@@ -56,6 +56,34 @@ export default function MatchList() {
           )}
         </div>
       )}
+    </>
+  );
+}
+
+export function SideList({ classNames, playerIds, players, right, title }: SideListProps) {
+  return (
+    <div className={cn("w-full flex flex-col col-span-2", classNames)}>
+      <h1 className="text-primary uppercase font-bold mb-4">
+        {title} - {playerIds.length}P
+      </h1>
+
+      {playerIds.map((playerId) => {
+        const player = players.find((p) => p.id === playerId);
+        if (!player) return null;
+
+        return (
+          <div className="flex border-b first:border-t text-sm py-2" key={player.id}>
+            <h1 className={cn("font-bold flex-1", right)}>{player.playerName}</h1>
+
+            <div className="grid grid-cols-3 flex-1">
+              <h1 className="text-green-300">{player.wins}</h1>
+              <h1 className="text-red-300">{player.totalMatch - player.wins}</h1>
+              <h1>{player.wins}</h1>
+            </div>
+            {/* <h1 className="font-bold hidden sm:block">{player.playerName}</h1> */}
+          </div>
+        );
+      })}
     </div>
   );
 }

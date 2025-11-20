@@ -91,7 +91,7 @@ export default function Navbar() {
 
             <CustomDialog
               trigger={
-                <Button className="rounded-full h-full bg-lime-400 hover:bg-lime-300 transition-all shadow-[0_0_15px_-3px_rgba(163,230,53,0.7)]">
+                <Button className="rounded-full h-full bg-primary hover:bg-lime-300 transition-all">
                   <Plus strokeWidth={3} />
                   Add Player
                 </Button>

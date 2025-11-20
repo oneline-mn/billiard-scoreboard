@@ -40,7 +40,7 @@ export function MatchModal({ onSubmit, players, trigger }: MatchModalProps) {
     }
   };
 
-  // ATTENTION Ux taldaa lowercase bolgoson
+  // ATTENTION Ux taldaa lowercase bolgoson. For search usage
   const filteredASide = players.filter((p) => p.playerName.toLowerCase().includes(aSearch.toLowerCase()));
 
   const filteredBSide = players.filter((p) => p.playerName.toLowerCase().includes(bSearch.toLowerCase()));
