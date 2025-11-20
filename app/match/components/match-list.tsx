@@ -2,7 +2,7 @@
 
 import { useStateMachine } from "little-state-machine";
 
-import useHydration from "@/lib/useHydration";
+import useHydration from "@/lib/use-hydration";
 
 export default function MatchList() {
   const { state } = useStateMachine();

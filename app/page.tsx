@@ -6,7 +6,7 @@ import Image from "next/image";
 import { PlayerInputs } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LEADERS_TROPHY } from "@/lib/constants";
-import useHydration from "@/lib/useHydration";
+import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
 import { MatchHistory } from "./match/page";
@@ -158,4 +158,3 @@ function Leader({ children, className, label, player, trophy }: LeaderProps) {
     </div>
   );
 }
-

@@ -2,12 +2,12 @@
 
 import { createStore, useStateMachine } from "little-state-machine";
 
-import { addPlayer, PlayerInputs } from "@/components/shared/navbar";
+import { PlayerInputs } from "@/components/shared/navbar";
 import { showToast } from "@/components/shared/use-toast";
 import { Button } from "@/components/ui/button";
 
-import MatchList from "./components/MatchList";
-import { MatchModal } from "./components/MatchModal";
+import MatchList from "./components/match-list";
+import { MatchModal } from "./components/match-modal";
 
 export interface MatchHistory {
   aSide: number[];
@@ -21,10 +21,7 @@ createStore({
   players: [],
 });
 
-export function addMatch(
-  state: { matches: MatchHistory[]; players: PlayerInputs[] },
-  payload: { aSide: number[]; bSide: number[] }
-) {
+export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[] }) {
   const newMatch: MatchHistory = {
     aSide: payload.aSide,
     bSide: payload.bSide,
@@ -39,9 +36,7 @@ export function addMatch(
 }
 
 export default function Page() {
-  const { actions, state } = useStateMachine({ actions: { addMatch, addPlayer } });
-
-  // uu ene addplayer hereggu
+  const { actions, state } = useStateMachine({ actions: { addMatch } });
 
   return (
     <div className="max-w-4xl mx-auto px-4">
