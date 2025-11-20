@@ -2,14 +2,26 @@
 
 import { createStore, useStateMachine } from "little-state-machine";
 import Image from "next/image";
-import { useSyncExternalStore } from "react";
 
+import { PlayerInputs } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LEADERS_TROPHY } from "@/lib/constants";
+import useHydration from "@/lib/useHydration";
 import { cn } from "@/lib/utils";
 
-createStore({ players: [] });
+import { MatchHistory } from "./match/page";
 
+createStore({
+  matches: [],
+  players: [],
+});
+
+declare module "little-state-machine" {
+  interface GlobalState {
+    matches: MatchHistory[];
+    players: PlayerInputs[];
+  }
+}
 interface LeaderProps {
   children?: React.ReactNode;
   className?: React.ReactNode;
@@ -97,7 +109,7 @@ export default function Home() {
                             <span className="text-red-400">{player.totalMatch - player.wins}</span>
                           </TableCell>
                           <TableCell className="text-center">{player.totalMatch}</TableCell>
-                          
+
                           {/* Winrate */}
                           <TableCell className="text-center flex gap-3 justify-center items-center">
                             <div className="flex relative h-1 w-12 sm:w-24">
@@ -147,10 +159,3 @@ function Leader({ children, className, label, player, trophy }: LeaderProps) {
   );
 }
 
-function useHydration() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}

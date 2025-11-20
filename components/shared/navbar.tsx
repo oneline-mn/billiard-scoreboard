@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
 import { Plus } from "lucide-react";
+import { MatchHistory } from "@/app/match/page";
 
 export interface PlayerInputs {
   id: number;
@@ -19,13 +20,7 @@ export interface PlayerInputs {
   wins: number;
 }
 
-declare module "little-state-machine" {
-  interface GlobalState {
-    players: PlayerInputs[];
-  }
-}
-
-export function addPlayer(state: { players: PlayerInputs[] }, payload: Omit<PlayerInputs, "id">) {
+export function addPlayer(state: { players: PlayerInputs[]; matches: MatchHistory[] }, payload: Omit<PlayerInputs, "id">) {
   const newPlayer: PlayerInputs = {
     id: state.players.length + 1,
     ...payload,
