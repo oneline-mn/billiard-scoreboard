@@ -41,6 +41,8 @@ export function addMatch(
 export default function Page() {
   const { actions, state } = useStateMachine({ actions: { addMatch, addPlayer } });
 
+  // uu ene addplayer hereggu
+
   return (
     <div className="max-w-4xl mx-auto px-4">
       <div className="flex w-full flex-col pt-32 space-y-4">
