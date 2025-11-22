@@ -14,8 +14,11 @@ export interface MatchHistory {
   aSide: number[];
   bSide: number[];
   createdAt: string;
-  status: string;
+  status: MatchStatus;
 }
+
+// Union type
+type MatchStatus = "finished" | "on match";
 
 createStore({
   matches: [],
@@ -27,7 +30,7 @@ export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs
     aSide: payload.aSide,
     bSide: payload.bSide,
     createdAt: new Date().toISOString(),
-    status: "On Going",
+    status: "on match",
   };
 
   return {
@@ -48,7 +51,12 @@ export default function Page() {
             showToast("success", "Match saved!");
           }}
           players={state.players}
-          trigger={<Button className="rounded-full"><Plus strokeWidth={3} />New Match</Button>}
+          trigger={
+            <Button className="rounded-full">
+              <Plus strokeWidth={3} />
+              New Match
+            </Button>
+          }
         />
         <MatchList />
       </div>
