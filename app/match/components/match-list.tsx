@@ -1,12 +1,7 @@
 "use client";
 
 import { useStateMachine } from "little-state-machine";
-import { Plus } from "lucide-react";
 
-import { CustomDialog } from "@/components/shared/custom-dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
@@ -44,36 +39,13 @@ export default function MatchList() {
                           <span className="relative flex size-2">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75"></span> <span className="relative inline-flex size-2 rounded-full bg-teal-500"></span>
                           </span>
-                          <span>On match</span>
+                          <span>{match.status}</span>
                         </div>
                       </div>
                       <SideList classNames="sm:text-right flex-2 order-3" playerIds={match.bSide} players={players} right="sm:order-last" title="B Side" />
                     </div>
                     <div className="items-center justify-between flex border-t px-8 py-4">
                       <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
-
-                      <CustomDialog
-                        contentClassName="max-w-sm!"
-                        showFooter
-                        title="Choose Winner Side"
-                        trigger={
-                          <Button className="rounded-full" variant={"secondary"}>
-                            <Plus strokeWidth={3} />
-                            Finish match
-                          </Button>
-                        }
-                      >
-                        <RadioGroup defaultValue="option-one">
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="option-one" value="option-one" />
-                            <Label htmlFor="option-one">A side</Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem id="option-two" value="option-two" />
-                            <Label htmlFor="option-two">B Side</Label>
-                          </div>
-                        </RadioGroup>
-                      </CustomDialog>
                     </div>
                   </div>
                 );

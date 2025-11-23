@@ -17,12 +17,11 @@ export interface MatchHistory {
   status: MatchStatus;
 }
 
-// Union type
 type MatchStatus = "finished" | "on match";
 
 createStore({
-  matches: [],
-  players: [],
+  matches: [] as MatchHistory[],
+  players: [] as PlayerInputs[],
 });
 
 export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[] }) {
@@ -46,13 +45,13 @@ export default function Page() {
     <div className="max-w-7xl mx-auto px-4">
       <div className="flex w-full flex-col items-center pt-20 space-y-4">
         <MatchModal
-          onSubmit={(result) => {
-            actions.addMatch(result);
+          onSubmit={(payload) => {
+            actions.addMatch(payload);
             showToast("success", "Match saved!");
           }}
           players={state.players}
           trigger={
-            <Button className="rounded-full">
+            <Button className="rounded-full flex items-center gap-2">
               <Plus strokeWidth={3} />
               New Match
             </Button>
