@@ -20,8 +20,8 @@ export interface MatchHistory {
 type MatchStatus = "finished" | "on match";
 
 createStore({
-  matches: [] as MatchHistory[],
-  players: [] as PlayerInputs[],
+  matches: [],
+  players: [],
 });
 
 export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[] }) {
