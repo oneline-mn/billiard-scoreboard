@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
 import { Plus } from "lucide-react";
+import { MatchHistory } from "@/app/match/page";
 
 export interface PlayerInputs {
   id: number;
@@ -19,13 +20,7 @@ export interface PlayerInputs {
   wins: number;
 }
 
-declare module "little-state-machine" {
-  interface GlobalState {
-    players: PlayerInputs[];
-  }
-}
-
-export function addPlayer(state: { players: PlayerInputs[] }, payload: Omit<PlayerInputs, "id">) {
+export function addPlayer(state: { players: PlayerInputs[]; matches: MatchHistory[] }, payload: Omit<PlayerInputs, "id">) {
   const newPlayer: PlayerInputs = {
     id: state.players.length + 1,
     ...payload,
@@ -96,7 +91,7 @@ export default function Navbar() {
 
             <CustomDialog
               trigger={
-                <Button className="rounded-full h-full bg-lime-400 hover:bg-lime-300 transition-all shadow-[0_0_15px_-3px_rgba(163,230,53,0.7)]">
+                <Button className="rounded-full h-full bg-primary hover:bg-lime-300 transition-all">
                   <Plus strokeWidth={3} />
                   Add Player
                 </Button>
@@ -117,7 +112,7 @@ export default function Navbar() {
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
             {DEVNAV_LIST.map((list) => (
               <Button key={list.name} variant="outline" asChild className="h-full rounded-full">
-                <Link href={"fb.com"} className="italic font-semibold capitalize" target="_blank">
+                <Link href={list.url} className="italic font-semibold capitalize" target="_blank" rel="noopener noreferrer">
                   {list.icon}
                   {list.name}
                 </Link>
