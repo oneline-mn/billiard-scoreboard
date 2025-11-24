@@ -43,10 +43,14 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
   const filteredASide = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
   const filteredBSide = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 2));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+  function nextStep() {
+    setStep((prev) => Math.min(prev + 1, 2));
+  }
+  function prevStep() {
+    setStep((prev) => Math.max(prev - 1, 1));
+  }
 
-  const onSubmitHandler = (data: { aSide: number[]; bSide: number[] }) => {
+  function onSubmitHandler(data: { aSide: number[]; bSide: number[] }) {
     onSubmit({
       aSide: data.aSide,
       bSide: data.bSide,

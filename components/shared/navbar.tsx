@@ -49,8 +49,8 @@ export default function Navbar() {
     },
   });
 
-  const onSubmit: SubmitHandler<Omit<PlayerInputs, "id">> = (data) => {
-    if (!data.playerName.trim()) {
+  function onSubmit (data: Omit<PlayerInputs, "id">) {
+    if (!data.playerName || !data.playerName.trim()) {
       showToast("error", "Тоглогчийн нэр хоосон байж болохгүй!");
       return;
     }
