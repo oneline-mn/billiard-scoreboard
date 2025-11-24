@@ -39,7 +39,7 @@ export default function MatchList() {
                           <span className="relative flex size-2">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75"></span> <span className="relative inline-flex size-2 rounded-full bg-teal-500"></span>
                           </span>
-                          <span>{match.status}</span>
+                          <span className="capitalize">{match.status}</span>
                         </div>
                       </div>
                       <SideList classNames="sm:text-right flex-2 order-3" playerIds={match.bSide} players={players} right="sm:order-last" title="B Side" />

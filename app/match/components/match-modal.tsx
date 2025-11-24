@@ -15,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 
 import { MatchHistory } from "../page";
+import { SidePreview } from "./side-preview";
 
 interface MatchModalProps {
   initialData?: MatchHistory;
@@ -24,8 +25,7 @@ interface MatchModalProps {
 }
 
 export function MatchModal({ initialData, onSubmit, players, trigger }: MatchModalProps) {
-  const [aSearch, setASearch] = useState("");
-  const [bSearch, setBSearch] = useState("");
+  const [playerSearch, setPlayerSearch] = useState("");
   const [step, setStep] = useState(1);
 
   // TODO: 
@@ -40,8 +40,8 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
   const aSideSelected = watch("aSide");
   const bSideSelected = watch("bSide");
 
-  const filteredASide = players.filter((p) => p.playerName.toLowerCase().includes(aSearch.toLowerCase()));
-  const filteredBSide = players.filter((p) => p.playerName.toLowerCase().includes(bSearch.toLowerCase()));
+  const filteredASide = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
+  const filteredBSide = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 2));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
@@ -56,33 +56,6 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
     setStep(1);
   };
 
-  const SideOverview = ({ selectedSide }: { selectedSide: number[] }) => {
-    return (
-      <>
-        {selectedSide.length === 0 ? (
-          <p className="text-red-300 py-1">No players selected</p>
-        ) : (
-          <>
-            {[...selectedSide].map((playerId, i) => {
-              const player = players.find((p) => p.id === playerId);
-              if (!player) return null;
-              return (
-                <div className="border p-2 rounded flex justify-between" key={i}>
-                  <h1 className="flex-1">{player.playerName}</h1>
-                  <div className="flex-1 w-full grid grid-cols-3">
-                    <h1 className="text-green-300">{player.wins}</h1>
-                    <h1 className="text-red-300">{player.totalMatch - player.wins}</h1>
-                    <h1>{player.wins}</h1>
-                  </div>
-                </div>
-              );
-            })}
-          </>
-        )}
-      </>
-    );
-  };
-
   return (
     <CustomDialog contentClassName="max-w-4xl!" showFooter={false} title="Choose Players" trigger={trigger}>
       <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -90,7 +63,7 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
           {step === 1 && (
             <div className="space-y-3">
               <h1 className="font-semibold text-green-400 text-center text-sm">A Side</h1>
-              <Input onChange={(e) => setASearch(e.target.value)} placeholder="Search A Side..." value={aSearch} />
+              <Input onChange={(e) => setPlayerSearch(e.target.value)} placeholder="Search A Side..." value={playerSearch} />
 
               {/* ATTENTION: A Side player */}
               <ScrollArea className="max-h-[50vh] border flex p-1 flex-col gap-1 rounded">
@@ -100,7 +73,7 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
                   render={({ field }) => (
                     <div className="flex flex-col">
                       {filteredASide.map((p) => {
-                        const isDisabled = aSideSelected.includes(p.id);
+                        const isDisabled = bSideSelected.includes(p.id);
                         return (
                           <div className={cn("flex gap-2 border-b h-10 items-center last:border-b-0 pl-1", isDisabled ? "opacity-50 cursor-not-allowed" : "")} key={p.id}>
                             <Checkbox
@@ -128,7 +101,7 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
           {step === 2 && (
             <div className="space-y-3">
               <h1 className="font-semibold text-red-400 text-center text-sm">B Side</h1>
-              <Input onChange={(e) => setBSearch(e.target.value)} placeholder="Search B Side..." value={bSearch} />
+              <Input onChange={(e) => setPlayerSearch(e.target.value)} placeholder="Search B Side..." value={playerSearch} />
 
               {/* ATTENTION: B Side player */}
               <ScrollArea className="max-h-[50vh] border flex p-1 flex-col gap-1 rounded">
@@ -166,11 +139,12 @@ export function MatchModal({ initialData, onSubmit, players, trigger }: MatchMod
           <div className="border-l pl-4 flex flex-col">
             <h1 className="font-semibold text-center text-sm mb-10">Players overview</h1>
             <div className="flex flex-col gap-1 justify-between size-full text-xs">
+              
               {/* ATTENTION: Overview */}
               <div className="flex flex-col gap-1">
-                <SideOverview selectedSide={aSideSelected} />
+                <SidePreview players={players} selectedSide={aSideSelected} />
                 <h1 className="text-center my-3 text-sm font-bold">VS</h1>
-                <SideOverview selectedSide={bSideSelected} />
+                <SidePreview players={players} selectedSide={bSideSelected} />
               </div>
 
               {/* TODO: Win side */}
