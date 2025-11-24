@@ -10,8 +10,9 @@ import { useStateMachine } from "little-state-machine";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
-import { Plus } from "lucide-react";
+import { Plus, RotateCcw } from "lucide-react";
 import { MatchHistory } from "@/app/match/page";
+import { resetState } from "@/app/page";
 
 export interface PlayerInputs {
   id: number;
@@ -34,7 +35,7 @@ export function addPlayer(state: { players: PlayerInputs[]; matches: MatchHistor
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { state, actions } = useStateMachine({ actions: { addPlayer } });
+  const { state, actions } = useStateMachine({ actions: { addPlayer, resetState } });
 
   const {
     register,
@@ -76,10 +77,10 @@ export default function Navbar() {
     <section className="w-full sticky top-4 z-40">
       <div className="max-w-4xl rounded-full w-fit mx-auto flex items-center">
         <div className="flex justify-between items-center gap-2">
-          <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
+          <div className="flex rounded-full items-center gap-4 bg-background p-2 border border-fill">
             <div className="flex gap-2">
               {NAV_LIST.map((list) => (
-                <Button key={list.name} variant={pathname === list.url ? "secondary" : "outline"} asChild className="h-10 rounded-full">
+                <Button key={list.name} variant={pathname === list.url ? "secondary" : "outline"} asChild className=" rounded-full">
                   <Link href={list.url} className="font-semibold capitalize">
                     <span>{list.icon}</span>
                     <span>{list.name}</span>
@@ -89,7 +90,8 @@ export default function Navbar() {
             </div>
             <Separator orientation="vertical" className="h-8! w-1" />
 
-            <CustomDialog
+           <div className="flex items-center h-full gap-2">
+             <CustomDialog
               trigger={
                 <Button className="rounded-full h-full bg-primary hover:bg-lime-300 transition-all">
                   <Plus strokeWidth={3} />
@@ -108,10 +110,15 @@ export default function Navbar() {
                 </div>
               </form>
             </CustomDialog>
+
+            <Button variant={"outline"} onClick={() => actions.resetState()} className="aspect-square rounded-full">
+              <RotateCcw />
+            </Button>
+           </div>
           </div>
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
             {DEVNAV_LIST.map((list) => (
-              <Button key={list.name} variant="outline" asChild className="h-full rounded-full">
+              <Button key={list.name} variant="outline" asChild className="rounded-full">
                 <Link href={list.url} className="italic font-semibold capitalize" target="_blank" rel="noopener noreferrer">
                   {list.icon}
                   {list.name}
