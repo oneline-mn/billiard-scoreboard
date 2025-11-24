@@ -12,7 +12,7 @@ import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
 import { Plus, RotateCcw } from "lucide-react";
 import { MatchHistory } from "@/app/match/page";
-import { resetState } from "@/app/page";
+import { resetState } from "@/actions";
 
 export interface PlayerInputs {
   id: number;

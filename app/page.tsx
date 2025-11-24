@@ -16,14 +16,6 @@ createStore({
   players: [],
 });
 
-export function resetState(state: { matches: MatchHistory[]; players: PlayerInputs[] }) {
-  return {
-    ...state,
-    matches: [],
-    players: [],
-  };
-}
-
 declare module "little-state-machine" {
   interface GlobalState {
     matches: MatchHistory[];
@@ -67,22 +59,29 @@ export default function Home() {
                 return (
                   <Leader className={cn(index === 1 && "mt-10 sm:order-first", index === 2 && "mt-14")} key={index} label={index + 1} player={<h1>{leader.playerName}</h1>} trophy={LEADERS_TROPHY[index].name}>
                     <div className="grid grid-cols-3 gap-4 w-full mt-4  border-t pt-4">
+                      {/* <div className="col-span-full">
+                        <h1 className="text-right text-xs text-slate-300"> {Math.round(leader.totalMatch === 0 ? 0 : (leader.wins / leader.totalMatch) * 100)}%</h1>
+                        <div className="flex relative h-1 w-full rounded overflow-hidden">
+                          <span className="size-full bg-fill"></span>
+                          <span className={cn(`absolute left-0 top-0 bg-primary h-full`)} style={{ width: `${Math.round(leader.totalMatch === 0 ? 0 : (leader.wins / leader.totalMatch) * 100)}%` }}></span>
+                        </div> 
+                      </div>*/}
                       <div className="">
                         <h1 className="text-sm text-slate-400 font-medium">WIns</h1>
-                        <h1 className="font-medium">
+                        <h1 className="font-semibold">
                           <span className="text-green-300">{leader.wins}</span>
                         </h1>
                       </div>
                       <div>
                         <h1 className="text-sm text-slate-400 font-medium">Losses</h1>
-                        <h1 className="font-medium">
+                        <h1 className="font-semibold">
                           <span className="text-red-300">{leader.totalMatch - leader.wins}</span>
                         </h1>
                       </div>
                       <div>
                         <h1 className="text-sm text-slate-400 font-medium">Winrate</h1>
-                        <h1 className="font-medium">
-                          <span>{getWinRate(leader.wins, leader.totalMatch)}%</span>
+                        <h1 className="font-semibold">
+                          <span className="text-slate-300">{getWinRate(leader.wins, leader.totalMatch)}%</span>
                         </h1>
                       </div>
                     </div>

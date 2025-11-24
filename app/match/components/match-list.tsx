@@ -4,10 +4,11 @@ import { useStateMachine } from "little-state-machine";
 
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
-import { MatchStatus, updateMatchList } from "../page";
+import { MatchStatus } from "../page";
 import { MatchModal } from "./match-modal";
 import { Button } from "@/components/ui/button";
 import { getWinRate } from "@/app/page";
+import { updateMatchList } from "@/actions";
 
 interface SideListProps {
   classNames?: string;
@@ -15,7 +16,6 @@ interface SideListProps {
   players: Array<{ id: number; playerName: string; totalMatch: number; wins: number }>;
   right?: string;
   title: string;
-  reverse?: string;
 }
 
 export default function MatchList() {
@@ -47,11 +47,11 @@ export default function MatchList() {
                           <span className="capitalize">{match.status}</span>
                         </div>
                       </div>
-                      <SideList classNames="sm:text-right flex-2 order-3" playerIds={match.bSide} players={players} right="sm:order-last" title="B Side" reverse="flex-row-reverse text-left" />
+                      <SideList classNames="sm:text-right flex-2 order-3" playerIds={match.bSide} players={players} right="sm:order-last" title="B Side" />
                     </div>
-                    {match.status === "on match" && (
-                      <div className="items-center justify-between flex border-t px-8 py-4">
-                        <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
+                    <div className="items-center justify-between flex border-t px-8 py-4">
+                      <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
+                      {match.status === "on match" && (
                         <MatchModal
                           initialData={match}
                           mode="review"
@@ -66,8 +66,8 @@ export default function MatchList() {
                             </Button>
                           }
                         />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -79,7 +79,7 @@ export default function MatchList() {
   );
 }
 
-export function SideList({ classNames, playerIds, players, right, title, reverse }: SideListProps) {
+export function SideList({ classNames, playerIds, players, right, title }: SideListProps) {
   return (
     <div className={cn("w-full flex flex-col col-span-2", classNames)}>
       <h1 className="text-primary uppercase font-bold mb-4">
@@ -94,7 +94,7 @@ export function SideList({ classNames, playerIds, players, right, title, reverse
           <div className="flex border-b first:border-t text-sm py-2" key={player.id}>
             <h1 className={cn("font-bold flex-1", right)}>{player.playerName}</h1>
 
-            <div className={cn("flex flex-1 text-right", reverse)}>
+            <div className={cn("flex flex-1 text-left")}>
               <h1 className="text-green-300 flex-1">{player.wins}</h1>
               <h1 className="text-red-300 flex-1">{player.totalMatch - player.wins}</h1>
               <h1 className="flex-1">{getWinRate(player.wins, player.totalMatch)}%</h1>

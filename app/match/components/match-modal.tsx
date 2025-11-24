@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { CustomDialog } from "@/components/shared/custom-dialog";
@@ -37,30 +37,16 @@ export function MatchModal({ initialData, mode = "create", onSubmit, players, tr
     },
   });
 
+  const filteredPlayers = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
+
   // WARNING: watch()
   const aSideSelected = watch("aSide");
   const bSideSelected = watch("bSide");
 
-  useEffect(() => {
-    if (initialData) {
-      setValue("aSide", initialData.aSide);
-      setValue("bSide", initialData.bSide);
-      if (initialData.status === "finished") {
-        // ATTENTION:
-        setWinnerSide(initialData.aSide.length >= initialData.bSide.length ? "a" : "b");
-      }
-    } else {
-      reset({ aSide: [], bSide: [] });
-      setWinnerSide(null);
-      setStep(1);
-    }
-  }, [initialData, mode, reset, setValue]);
-
-  const filteredPlayers = players.filter((p) => p.playerName.toLowerCase().includes(playerSearch.toLowerCase()));
-
   function nextStep() {
     setStep((prev) => Math.min(prev + 1, 2));
   }
+  
   function prevStep() {
     setStep((prev) => Math.max(prev - 1, 1));
   }
