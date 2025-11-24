@@ -38,6 +38,7 @@ const eslintConfig = defineConfig([
         },
       ],
     },
+    files: ["app/**/*.{js,jsx,ts,tsx}"],
   },
 ]);
 

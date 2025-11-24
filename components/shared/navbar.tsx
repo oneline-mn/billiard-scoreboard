@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { CustomDialog } from "./custom-dialog";
 import { Input } from "../ui/input";
 import { useStateMachine } from "little-state-machine";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
 import { Plus, RotateCcw } from "lucide-react";
