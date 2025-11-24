@@ -16,6 +16,12 @@ createStore({
   players: [],
 });
 
+export const resetState = (state: { matches: MatchHistory[], players: PlayerInputs[] }) => ({
+  ...state,
+  matches: [],
+  players: [],
+})
+
 declare module "little-state-machine" {
   interface GlobalState {
     matches: MatchHistory[];
