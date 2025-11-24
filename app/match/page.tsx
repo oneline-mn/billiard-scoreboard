@@ -17,29 +17,39 @@ export interface MatchHistory {
   status: MatchStatus;
 }
 
-type MatchStatus = "finished" | "on match";
+export type MatchStatus = "finished" | "on match";
 
 createStore({
   matches: [],
   players: [],
 });
 
-export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[] }) {
+export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[]; winnerSide?: "a" | "b" }) {
   const newMatch: MatchHistory = {
     aSide: payload.aSide,
     bSide: payload.bSide,
     createdAt: new Date().toISOString(),
-    status: "on match",
+    status: payload.winnerSide ? "finished" : "on match",
   };
+
+  const updatedPlayers = payload.winnerSide
+    ? state.players.map((p) => {
+        const isWinner = payload.winnerSide === "a" ? payload.aSide.includes(p.id) : payload.bSide.includes(p.id);
+        const isLoser = payload.aSide.includes(p.id) || payload.bSide.includes(p.id);
+
+        return isWinner ? { ...p, totalMatch: p.totalMatch + 1, wins: p.wins + 1 } : isLoser ? { ...p, totalMatch: p.totalMatch + 1 } : p;
+      })
+    : state.players;
 
   return {
     ...state,
     matches: [...state.matches, newMatch],
+    players: updatedPlayers,
   };
 }
 
 export default function Page() {
-  const { actions, state } = useStateMachine({ actions: { addMatch } });
+  const { actions, state } = useStateMachine({ actions: { addMatch, updateMatchList } });
 
   return (
     <div className="max-w-7xl mx-auto px-4">
@@ -61,4 +71,15 @@ export default function Page() {
       </div>
     </div>
   );
+}
+
+export function updateMatchList(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { matchIndex: number; updatedMatch: MatchHistory; updatedPlayers?: PlayerInputs[] }) {
+  const newMatches = [...state.matches];
+  newMatches[payload.matchIndex] = payload.updatedMatch;
+
+  return {
+    ...state,
+    matches: newMatches,
+    players: payload.updatedPlayers || state.players,
+  };
 }

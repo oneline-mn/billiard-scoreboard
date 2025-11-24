@@ -38,11 +38,22 @@ interface LeaderProps {
   trophy?: string;
 }
 
+export function getWinRate(wins: number, totalMatch: number) {
+  if (totalMatch === 0) return 0;
+  return Math.round((wins / totalMatch) * 100);
+}
+
 export default function Home() {
   const { state } = useStateMachine();
   const isHydrated = useHydration();
 
-  const sortedPlayers = state.players.sort((a, b) => b.wins - a.wins);
+  const sortedPlayers = state.players.sort((a, b) => {
+    if (b.wins !== a.wins) {
+      return b.wins - a.wins;
+    }
+    return a.totalMatch - a.wins - (b.totalMatch - b.wins);
+  });
+
   const top3 = sortedPlayers.slice(0, 3);
   const others = sortedPlayers.slice(3);
 
@@ -71,7 +82,7 @@ export default function Home() {
                       <div>
                         <h1 className="text-sm text-slate-400 font-medium">Winrate</h1>
                         <h1 className="font-medium">
-                          <span>{leader.totalMatch === 0 ? 0 : Math.round((leader.wins / leader.totalMatch) * 100)}</span>%
+                          <span>{getWinRate(leader.wins, leader.totalMatch)}%</span>
                         </h1>
                       </div>
                     </div>
@@ -120,9 +131,9 @@ export default function Home() {
 
                           {/* Winrate */}
                           <TableCell className="text-center flex gap-3 justify-center items-center">
-                            <div className="flex relative h-1 w-12 sm:w-24">
+                            <div className="flex relative h-1 w-12 sm:w-32 rounded overflow-hidden">
                               <span className="size-full bg-fill"></span>
-                              <span className={cn(`bg-primary h-full w-[${Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%]`)}></span>
+                              <span className={cn(`absolute left-0 top-0 bg-primary h-full`)} style={{ width: `${Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%` }}></span>
                             </div>
                             {Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%
                           </TableCell>
