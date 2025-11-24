@@ -27,8 +27,6 @@ const eslintConfig = defineConfig([
   {
     files: ["app/**/*.{js,jsx,ts,tsx}"],
     ...perfectionist.configs["recommended-natural"],
-  },
-  {
     rules: {
       "func-style": [
         "error",
@@ -38,7 +36,6 @@ const eslintConfig = defineConfig([
         },
       ],
     },
-    files: ["app/**/*.{js,jsx,ts,tsx}"],
   },
 ]);
 
