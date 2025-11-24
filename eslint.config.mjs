@@ -27,6 +27,15 @@ const eslintConfig = defineConfig([
   {
     files: ["app/**/*.{js,jsx,ts,tsx}"],
     ...perfectionist.configs["recommended-natural"],
+    rules: {
+      "func-style": [
+        "error",
+        "declaration",
+        {
+          allowArrowFunctions: false,
+        },
+      ],
+    },
   },
 ]);
 
