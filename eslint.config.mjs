@@ -25,9 +25,6 @@ const eslintConfig = defineConfig([
   },
 
   {
-    plugins: {
-      "import-x": importX,
-    },
     files: ["app/**/*.{js,jsx,ts,tsx}"],
     ...perfectionist.configs["recommended-natural"],
     rules: {
