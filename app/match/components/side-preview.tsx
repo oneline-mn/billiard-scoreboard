@@ -1,11 +1,9 @@
 "use client";
 
 import { getWinRate } from "@/lib/func";
-import { PlayerInputs } from "@/components/shared/navbar";
 import { cn } from "@/lib/utils";
 import { MoveRight, Percent } from "lucide-react";
-
-export type WinnerType = "a" | "b" | null;
+import { PlayerInputs, WinnerType } from "@/types";
 
 interface SidePreviewProps {
   players: PlayerInputs[];

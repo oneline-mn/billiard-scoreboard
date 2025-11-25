@@ -3,14 +3,13 @@
 import { createStore, useStateMachine } from "little-state-machine";
 import Image from "next/image";
 
-import { PlayerInputs } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LEADERS_TROPHY } from "@/lib/constants";
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
-import { MatchHistory } from "./match/components/match-modal";
 import { getWinRate } from "@/lib/func";
+import { MatchHistory, PlayerInputs } from "@/types";
 
 createStore({
   matches: [],

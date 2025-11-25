@@ -4,11 +4,11 @@ import { useStateMachine } from "little-state-machine";
 
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
-import { MatchStatus } from "./match-modal";
 import { MatchModal } from "./match-modal";
 import { Button } from "@/components/ui/button";
 import { getWinRate } from "@/lib/func";
 import { updateMatchList } from "@/actions";
+import { MatchStatus } from "@/types";
 
 interface SideListProps {
   classNames?: string;

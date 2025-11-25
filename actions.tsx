@@ -1,5 +1,4 @@
-import { MatchHistory } from "./app/match/components/match-modal";
-import { PlayerInputs } from "./components/shared/navbar";
+import { MatchHistory, PlayerInputs } from "./types";
 
 export function updateMatchList(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { matchIndex: number; updatedMatch: MatchHistory; updatedPlayers?: PlayerInputs[] }) {
   const newMatches = [...state.matches];
@@ -19,7 +18,6 @@ export function resetState(state: { matches: MatchHistory[]; players: PlayerInpu
     players: [],
   };
 }
-
 
 export function addMatch(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { aSide: number[]; bSide: number[]; winnerSide?: "a" | "b" }) {
   const newMatch: MatchHistory = {

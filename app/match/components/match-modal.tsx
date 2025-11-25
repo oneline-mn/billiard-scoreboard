@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { CustomDialog } from "@/components/shared/custom-dialog";
-import { PlayerInputs } from "@/components/shared/navbar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
@@ -14,15 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { SidePreview } from "./side-preview";
-
-export type MatchStatus = "finished" | "on match";
-
-export interface MatchHistory {
-  aSide: number[];
-  bSide: number[];
-  createdAt: string;
-  status: MatchStatus;
-}
+import { MatchHistory, PlayerInputs } from "@/types";
 
 interface MatchModalProps {
   initialData?: MatchHistory;
