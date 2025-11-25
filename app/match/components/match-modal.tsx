@@ -30,7 +30,7 @@ export function MatchModal({ initialData, mode = "create", onSubmit, players, tr
   const [step, setStep] = useState(1);
   const [winnerSide, setWinnerSide] = useState<"a" | "b" | null>(null);
 
-  const { control, handleSubmit, reset, setValue, watch } = useForm({
+  const { control, handleSubmit, reset, watch } = useForm({
     defaultValues: {
       aSide: initialData?.aSide || [],
       bSide: initialData?.bSide || [],
