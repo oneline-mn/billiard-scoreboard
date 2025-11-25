@@ -4,6 +4,11 @@ import { useStateMachine } from "little-state-machine";
 
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
+import { MatchModal } from "./match-modal";
+import { Button } from "@/components/ui/button";
+import { getWinRate } from "@/lib/func";
+import { updateMatchList } from "@/actions";
+import { MatchStatus } from "@/types";
 
 interface SideListProps {
   classNames?: string;
@@ -13,15 +18,16 @@ interface SideListProps {
   title: string;
 }
 
+
 export default function MatchList() {
-  const { state } = useStateMachine();
+  const { actions, state } = useStateMachine({ actions: { updateMatchList } });
   const isHydrated = useHydration();
 
   const matches = state.matches;
   const players = state.players;
 
   return (
-    <>
+    <div className="w-full space-y-2">
       {isHydrated && (
         <div className="w-full">
           {matches.length === 0 ? (
@@ -46,6 +52,22 @@ export default function MatchList() {
                     </div>
                     <div className="items-center justify-between flex border-t px-8 py-4">
                       <p className="text-xs text-slate-400">{new Date(match.createdAt).toLocaleString()}</p>
+                      {match.status === "on match" && (
+                        <MatchModal
+                          initialData={match}
+                          mode="review"
+                          onSubmit={({ aSide, bSide, updatedPlayers, winnerSide }) => {
+                            const updatedMatch = { ...match, aSide, bSide, status: (winnerSide ? "finished" : "on match") as MatchStatus };
+                            actions.updateMatchList({ matchIndex: i, updatedMatch, updatedPlayers });
+                          }}
+                          players={state.players}
+                          trigger={
+                            <Button size="sm" variant={"secondary"}>
+                              Review match
+                            </Button>
+                          }
+                        />
+                      )}
                     </div>
                   </div>
                 );
@@ -54,7 +76,7 @@ export default function MatchList() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -73,10 +95,10 @@ export function SideList({ classNames, playerIds, players, right, title }: SideL
           <div className="flex border-b first:border-t text-sm py-2" key={player.id}>
             <h1 className={cn("font-bold flex-1", right)}>{player.playerName}</h1>
 
-            <div className="grid grid-cols-3 flex-1">
-              <h1 className="text-green-300">{player.wins}</h1>
-              <h1 className="text-red-300">{player.totalMatch - player.wins}</h1>
-              <h1>{player.wins}</h1>
+            <div className={cn("flex flex-1 text-left")}>
+              <h1 className="text-green-300 flex-1">{player.wins}</h1>
+              <h1 className="text-red-300 flex-1">{player.totalMatch - player.wins}</h1>
+              <h1 className="flex-1">{getWinRate(player.wins, player.totalMatch)}%</h1>
             </div>
           </div>
         );

@@ -35,6 +35,17 @@ const eslintConfig = defineConfig([
           allowArrowFunctions: false,
         },
       ],
+      "import-x/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: ["**/*.{ts,tsx}"],
+              from: ["app/**/page.tsx", "app/**/layout.tsx"],
+            },
+          ],
+        },
+      ],
     },
   },
 ]);

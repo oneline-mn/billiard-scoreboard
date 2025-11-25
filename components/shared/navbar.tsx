@@ -11,15 +11,9 @@ import { useForm } from "react-hook-form";
 import { showToast } from "./use-toast";
 import { DEVNAV_LIST, NAV_LIST } from "@/lib/constants";
 import { Plus, RotateCcw } from "lucide-react";
-import { MatchHistory } from "@/app/match/page";
-import { resetState } from "@/app/page";
 
-export interface PlayerInputs {
-  id: number;
-  playerName: string;
-  totalMatch: number;
-  wins: number;
-}
+import { resetState } from "@/actions";
+import { MatchHistory, PlayerInputs } from "@/types";
 
 export function addPlayer(state: { players: PlayerInputs[]; matches: MatchHistory[] }, payload: Omit<PlayerInputs, "id">) {
   const newPlayer: PlayerInputs = {
@@ -49,7 +43,7 @@ export default function Navbar() {
     },
   });
 
-  function onSubmit (data: Omit<PlayerInputs, "id">) {
+  function onSubmit(data: Omit<PlayerInputs, "id">) {
     if (!data.playerName || !data.playerName.trim()) {
       showToast("error", "Тоглогчийн нэр хоосон байж болохгүй!");
       return;
@@ -71,7 +65,7 @@ export default function Navbar() {
       </h1>
     );
     reset();
-  };
+  }
 
   return (
     <section className="w-full sticky top-4 z-40">
@@ -90,31 +84,31 @@ export default function Navbar() {
             </div>
             <Separator orientation="vertical" className="h-8! w-1" />
 
-           <div className="flex items-center h-full gap-2">
-             <CustomDialog
-              trigger={
-                <Button className="rounded-full h-full bg-primary hover:bg-lime-300 transition-all">
-                  <Plus strokeWidth={3} />
-                  Add Player
-                </Button>
-              }
-              title="Add new player"
-              contentClassName="max-w-sm!"
-              showFooter
-              onConfirm={handleSubmit(onSubmit)}
-            >
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <div className="flex flex-col space-y-4 rounded-xl">
-                  <Input id="player-name" placeholder="Player Name..." className="" {...register("playerName", { required: true })} />
-                  {errors.playerName && errors.playerName.type === "required" && <span className="text-red-300 text-xs">Player name is required</span>}
-                </div>
-              </form>
-            </CustomDialog>
+            <div className="flex items-center h-full gap-2">
+              <CustomDialog
+                trigger={
+                  <Button className="rounded-full h-full bg-primary hover:bg-lime-300 transition-all">
+                    <Plus strokeWidth={3} />
+                    Add Player
+                  </Button>
+                }
+                title="Add new player"
+                contentClassName="max-w-sm!"
+                showFooter
+                onConfirm={handleSubmit(onSubmit)}
+              >
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                  <div className="flex flex-col space-y-4 rounded-xl">
+                    <Input id="player-name" placeholder="Player Name..." className="" {...register("playerName", { required: true })} />
+                    {errors.playerName && errors.playerName.type === "required" && <span className="text-red-300 text-xs">Player name is required</span>}
+                  </div>
+                </form>
+              </CustomDialog>
 
-            <Button variant={"outline"} onClick={() => actions.resetState()} className="aspect-square rounded-full">
-              <RotateCcw />
-            </Button>
-           </div>
+              <Button variant={"outline"} onClick={() => actions.resetState()} className="aspect-square rounded-full">
+                <RotateCcw />
+              </Button>
+            </div>
           </div>
           <div className="flex h-full rounded-full items-center gap-4 bg-background p-2 border border-fill">
             {DEVNAV_LIST.map((list) => (

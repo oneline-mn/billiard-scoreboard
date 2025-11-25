@@ -3,26 +3,18 @@
 import { createStore, useStateMachine } from "little-state-machine";
 import Image from "next/image";
 
-import { PlayerInputs } from "@/components/shared/navbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LEADERS_TROPHY } from "@/lib/constants";
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
-import { MatchHistory } from "./match/page";
+import { getWinRate } from "@/lib/func";
+import { MatchHistory, PlayerInputs } from "@/types";
 
 createStore({
   matches: [],
   players: [],
 });
-
-export function resetState(state: { matches: MatchHistory[]; players: PlayerInputs[] }) {
-  return {
-    ...state,
-    matches: [],
-    players: [],
-  };
-}
 
 declare module "little-state-machine" {
   interface GlobalState {
@@ -42,7 +34,13 @@ export default function Home() {
   const { state } = useStateMachine();
   const isHydrated = useHydration();
 
-  const sortedPlayers = state.players.sort((a, b) => b.wins - a.wins);
+  const sortedPlayers = state.players.sort((a, b) => {
+    if (b.wins !== a.wins) {
+      return b.wins - a.wins;
+    }
+    return a.totalMatch - a.wins - (b.totalMatch - b.wins);
+  });
+
   const top3 = sortedPlayers.slice(0, 3);
   const others = sortedPlayers.slice(3);
 
@@ -58,20 +56,20 @@ export default function Home() {
                     <div className="grid grid-cols-3 gap-4 w-full mt-4  border-t pt-4">
                       <div className="">
                         <h1 className="text-sm text-slate-400 font-medium">WIns</h1>
-                        <h1 className="font-medium">
+                        <h1 className="font-semibold">
                           <span className="text-green-300">{leader.wins}</span>
                         </h1>
                       </div>
                       <div>
                         <h1 className="text-sm text-slate-400 font-medium">Losses</h1>
-                        <h1 className="font-medium">
+                        <h1 className="font-semibold">
                           <span className="text-red-300">{leader.totalMatch - leader.wins}</span>
                         </h1>
                       </div>
                       <div>
                         <h1 className="text-sm text-slate-400 font-medium">Winrate</h1>
-                        <h1 className="font-medium">
-                          <span>{leader.totalMatch === 0 ? 0 : Math.round((leader.wins / leader.totalMatch) * 100)}</span>%
+                        <h1 className="font-semibold">
+                          <span className="text-slate-300">{getWinRate(leader.wins, leader.totalMatch)}%</span>
                         </h1>
                       </div>
                     </div>
@@ -120,9 +118,9 @@ export default function Home() {
 
                           {/* Winrate */}
                           <TableCell className="text-center flex gap-3 justify-center items-center">
-                            <div className="flex relative h-1 w-12 sm:w-24">
+                            <div className="flex relative h-1 w-12 sm:w-32 rounded overflow-hidden">
                               <span className="size-full bg-fill"></span>
-                              <span className={cn(`bg-primary h-full w-[${Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%]`)}></span>
+                              <span className={cn(`absolute left-0 top-0 bg-primary h-full`)} style={{ width: `${Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%` }}></span>
                             </div>
                             {Math.round(player.totalMatch === 0 ? 0 : (player.wins / player.totalMatch) * 100)}%
                           </TableCell>
