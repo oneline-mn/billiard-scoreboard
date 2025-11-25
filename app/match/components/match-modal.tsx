@@ -13,9 +13,19 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-
-import { MatchHistory } from "../page";
 import { SidePreview } from "./side-preview";
+
+
+export type MatchStatus = "finished" | "on match";
+
+
+export interface MatchHistory {
+  aSide: number[];
+  bSide: number[];
+  createdAt: string;
+  status: MatchStatus;
+}
+
 
 interface MatchModalProps {
   initialData?: MatchHistory;

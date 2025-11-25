@@ -1,6 +1,6 @@
 "use client";
 
-import { getWinRate } from "@/app/page";
+import { getWinRate } from "@/lib/func";
 import { PlayerInputs } from "@/components/shared/navbar";
 import { cn } from "@/lib/utils";
 import { MoveRight, Percent } from "lucide-react";

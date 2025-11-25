@@ -10,15 +10,6 @@ import MatchList from "./components/match-list";
 import { MatchModal } from "./components/match-modal";
 import { addMatch, updateMatchList } from "@/actions";
 
-export interface MatchHistory {
-  aSide: number[];
-  bSide: number[];
-  createdAt: string;
-  status: MatchStatus;
-}
-
-export type MatchStatus = "finished" | "on match";
-
 createStore({
   matches: [],
   players: [],

@@ -4,10 +4,10 @@ import { useStateMachine } from "little-state-machine";
 
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
-import { MatchStatus } from "../page";
+import { MatchStatus } from "./match-modal";
 import { MatchModal } from "./match-modal";
 import { Button } from "@/components/ui/button";
-import { getWinRate } from "@/app/page";
+import { getWinRate } from "@/lib/func";
 import { updateMatchList } from "@/actions";
 
 interface SideListProps {
@@ -17,6 +17,7 @@ interface SideListProps {
   right?: string;
   title: string;
 }
+
 
 export default function MatchList() {
   const { actions, state } = useStateMachine({ actions: { updateMatchList } });

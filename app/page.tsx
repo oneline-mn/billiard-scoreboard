@@ -9,7 +9,10 @@ import { LEADERS_TROPHY } from "@/lib/constants";
 import useHydration from "@/lib/use-hydration";
 import { cn } from "@/lib/utils";
 
-import { MatchHistory } from "./match/page";
+import { MatchHistory } from "./match/components/match-modal";
+import { getWinRate } from "@/lib/func";
+
+export const test = 'test'
 
 createStore({
   matches: [],
@@ -30,10 +33,6 @@ interface LeaderProps {
   trophy?: string;
 }
 
-export function getWinRate(wins: number, totalMatch: number) {
-  if (totalMatch === 0) return 0;
-  return Math.round((wins / totalMatch) * 100);
-}
 
 export default function Home() {
   const { state } = useStateMachine();

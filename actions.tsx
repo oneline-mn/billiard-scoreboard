@@ -1,4 +1,4 @@
-import { MatchHistory } from "./app/match/page";
+import { MatchHistory } from "./app/match/components/match-modal";
 import { PlayerInputs } from "./components/shared/navbar";
 
 export function updateMatchList(state: { matches: MatchHistory[]; players: PlayerInputs[] }, payload: { matchIndex: number; updatedMatch: MatchHistory; updatedPlayers?: PlayerInputs[] }) {
