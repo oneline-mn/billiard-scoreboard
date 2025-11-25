@@ -12,8 +12,6 @@ import { cn } from "@/lib/utils";
 import { MatchHistory } from "./match/components/match-modal";
 import { getWinRate } from "@/lib/func";
 
-export const test = 'test'
-
 createStore({
   matches: [],
   players: [],
@@ -32,7 +30,6 @@ interface LeaderProps {
   player: React.ReactNode;
   trophy?: string;
 }
-
 
 export default function Home() {
   const { state } = useStateMachine();

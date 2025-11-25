@@ -15,9 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { SidePreview } from "./side-preview";
 
-
 export type MatchStatus = "finished" | "on match";
-
 
 export interface MatchHistory {
   aSide: number[];
@@ -25,7 +23,6 @@ export interface MatchHistory {
   createdAt: string;
   status: MatchStatus;
 }
-
 
 interface MatchModalProps {
   initialData?: MatchHistory;
@@ -56,7 +53,7 @@ export function MatchModal({ initialData, mode = "create", onSubmit, players, tr
   function nextStep() {
     setStep((prev) => Math.min(prev + 1, 2));
   }
-  
+
   function prevStep() {
     setStep((prev) => Math.max(prev - 1, 1));
   }

@@ -25,6 +25,9 @@ const eslintConfig = defineConfig([
   },
 
   {
+    plugins: {
+      "import-x": importX,
+    },
     files: ["app/**/*.{js,jsx,ts,tsx}"],
     ...perfectionist.configs["recommended-natural"],
     rules: {
@@ -33,6 +36,17 @@ const eslintConfig = defineConfig([
         "declaration",
         {
           allowArrowFunctions: false,
+        },
+      ],
+      "import-x/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: ["**/*.{ts,tsx}"],
+              from: ["app/**/page.tsx", "app/**/layout.tsx"],
+            },
+          ],
         },
       ],
     },
